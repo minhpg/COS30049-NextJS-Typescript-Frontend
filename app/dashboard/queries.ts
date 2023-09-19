@@ -17,7 +17,19 @@ export const getDashboardData = gql`
         average
       }
     }
-    transactions(options: { limit: 25, sort: { block_timestamp: DESC } }) {
+    getYearlyVolume {
+      year
+      transactionsCount
+      totalValue
+    }
+  }
+`;
+
+export const getTransactions = gql`
+  query getAllTransactions($offset: Int, $limit: Int) {
+    transactions(
+      options: { offset: $offset, limit: $limit, sort: { block_timestamp: DESC } }
+    ) {
       hash
       block_timestamp
       from_address {
@@ -29,10 +41,9 @@ export const getDashboardData = gql`
       gas
       value
     }
-    getYearlyVolume {
-      year
-      transactionsCount
-      totalValue
+    transactionsAggregate {
+      count
     }
   }
 `;
+

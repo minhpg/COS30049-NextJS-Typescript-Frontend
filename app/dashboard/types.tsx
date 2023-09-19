@@ -32,3 +32,12 @@ export type YearlyVolume = {
   transactionCount: number;
   totalValue: number;
 };
+
+export type TransactionTableResponse = {
+  data: {
+    transactions: Transaction[];
+    transactionsAggregate: {
+      count: number;
+    };
+  };
+};

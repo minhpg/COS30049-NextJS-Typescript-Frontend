@@ -3,7 +3,7 @@ export const truncateAddress = (address: string) => {
   return (
     address.substring(0, 6) +
     "..." +
-    address.substring(address.length - 7, address.length - 1)
+    address.substring(address.length - 7, address.length)
   );
 };
 

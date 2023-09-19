@@ -70,29 +70,6 @@ export const getGraphTransactions = gql`
 export const getBuyTransactions = gql`
   query getBuyTransactions($address: String, $offset: Int, $limit: Int) {
     transactions(
-      where: { from_address: { address: $address } },
-      options: { offset: $offset, limit: $limit }
-    ) {
-      hash
-      block_timestamp
-      from_address {
-        address
-      }
-      to_address {
-        address
-      }
-      gas
-      value
-    }
-    transactionsAggregate(where: { from_address: { address: $address } }) {
-      count
-    }
-  }
-`;
-
-export const getSellTransactions = gql`
-  query getSellTransactions($address: String, $offset: Int, $limit: Int) {
-    transactions(
       where: { to_address: { address: $address } },
       options: { offset: $offset, limit: $limit }
     ) {
@@ -108,6 +85,29 @@ export const getSellTransactions = gql`
       value
     }
     transactionsAggregate(where: { to_address: { address: $address } }) {
+      count
+    }
+  }
+`;
+
+export const getSellTransactions = gql`
+  query getSellTransactions($address: String, $offset: Int, $limit: Int) {
+    transactions(
+      where: { from_address: { address: $address } },
+      options: { offset: $offset, limit: $limit }
+    ) {
+      hash
+      block_timestamp
+      from_address {
+        address
+      }
+      to_address {
+        address
+      }
+      gas
+      value
+    }
+    transactionsAggregate(where: { from_address: { address: $address } }) {
       count
     }
   }

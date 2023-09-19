@@ -31,17 +31,14 @@ export type TransactionAggregate = {
   };
 };
 
-export type TransactionTableResponse = {
-  data: {
-    transactions: Transaction[];
-    transactionsAggregate: {
-      count: number;
-    };
-  };
-};
-
 export type AddressStatResponse = {
   data: {
     addresses: Address[];
   };
 };
+
+
+export const addressType = {
+  eoa: "Externally Owned Address",
+  contract: "Contract"
+}

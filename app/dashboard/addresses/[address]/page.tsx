@@ -8,17 +8,18 @@ import {
   Title,
   Text,
 } from "@tremor/react";
-import { Address, AddressStatResponse } from "./types";
+import { Address, AddressStatResponse, addressType } from "./types";
 import SoldVolumeCard from "@/components/dashboard/address/Cards/SoldVolumeCard";
 import BoughtVolumeCard from "@/components/dashboard/address/Cards/BoughtVolumeCard";
 import LatestTransactionsCard from "@/components/dashboard/address/Cards/LatestTransactionsCard";
 import DirectedGraph from "@/components/dashboard/address/Graphs/DirectedGraph";
-import {
-  getAddressStat,
-} from "./queries";
+import { getAddressStat } from "./queries";
 import { getClient } from "@/app/apollo/server-provider";
-import { getSellTransactions, getBuyTransactions } from "@/app/dashboard/addresses/[address]/queries";
-import TransactionsTable from "@/components/dashboard/address/Tables/TransactionsTable";
+import {
+  getSellTransactions,
+  getBuyTransactions,
+} from "@/app/dashboard/addresses/[address]/queries";
+import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
 
 const AddressPage = async ({
   params: { address },
@@ -36,7 +37,12 @@ const AddressPage = async ({
   });
 
   if (!(addresses.length > 0)) {
-    return <Title>Address Not Found - {address}</Title>;
+    return (
+      <>
+        <Title>{address}</Title>
+        <Text>Address not found!</Text>
+      </>
+    );
   }
 
   const { type, bought, sold, soldAggregate, boughtAggregate }: Address =
@@ -45,7 +51,9 @@ const AddressPage = async ({
   return (
     <>
       <Title>{address}</Title>
-      <Text>Type of address: {type}</Text>
+      <Text>
+        <span className="font-light">Type of address:</span> {addressType[type]}
+      </Text>
       <TabGroup className="mt-6">
         <TabList>
           <Tab>Overview</Tab>
@@ -67,16 +75,24 @@ const AddressPage = async ({
               <DirectedGraph address={address} />
             </div>
           </TabPanel>
-          <TabPanel>
-        <div className="mt-6">
-            <TransactionsTable address={address} query={getSellTransactions} title="Sell History" />
-        </div>
-      </TabPanel>
-      <TabPanel>
-        <div className="mt-6">
-            <TransactionsTable address={address} query={getBuyTransactions} title="Buy History"/>
-        </div>
-      </TabPanel>
+            <TabPanel>
+              <div className="mt-6">
+                <TransactionsTable
+                  address={address}
+                  query={getSellTransactions}
+                  title="Sell History"
+                />
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <div className="mt-6">
+                <TransactionsTable
+                  address={address}
+                  query={getBuyTransactions}
+                  title="Buy History"
+                />
+              </div>
+            </TabPanel>
         </TabPanels>
       </TabGroup>
     </>

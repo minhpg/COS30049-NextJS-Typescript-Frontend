@@ -13,20 +13,18 @@ import {
   Title,
   Text,
 } from "@tremor/react";
-import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import VolumeGraph from "@/components/dashboard/Graphs/VolumeGraph";
 import { TransactionAggregate, Transaction, YearlyVolume } from "./types";
-import { getDashboardData } from "./queries";
+import { getDashboardData, getTransactions } from "./queries";
 import { getClient } from "../apollo/server-provider";
 
 const DashboardPage = async () => {
   const client = getClient()
   const {
-    data: { transactionsAggregate, transactions, getYearlyVolume },
+    data: { transactionsAggregate, getYearlyVolume },
   }: {
     data: {
       transactionsAggregate: TransactionAggregate;
-      transactions: Transaction[];
       getYearlyVolume: YearlyVolume[];
     };
   } = await client.query({
@@ -54,9 +52,7 @@ const DashboardPage = async () => {
           </TabPanel>
           <TabPanel>
             <div className="mt-6">
-              <Card>
-                <TransactionsTable transactions={transactions} />
-              </Card>
+                <TransactionsTable address={""} query={getTransactions} title={"Transactions"}  />
             </div>
           </TabPanel>
         </TabPanels>

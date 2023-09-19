@@ -11,7 +11,7 @@ export const InfiniteQueryClientProvider = ({
   children: ReactNode;
 }) => {
   return (
-    <QueryClientProvider client={queryClient} contextSharing={true}>
+    <QueryClientProvider client={queryClient}>
       {children}
     </QueryClientProvider>
   );
