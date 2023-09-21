@@ -6,6 +6,6 @@ export const httpLink = new HttpLink({
   uri,
   fetchOptions: {
     // mode: "no-cors",
-    // fetchPolicy: 'network-only', 
+    fetchPolicy: 'network-only', 
   }
 });

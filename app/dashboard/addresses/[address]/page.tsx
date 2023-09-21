@@ -45,8 +45,7 @@ const AddressPage = async ({
     );
   }
 
-  const { type, bought, sold, soldAggregate, boughtAggregate }: Address =
-    addresses[0];
+  const { type }: Address = addresses[0];
 
   return (
     <>
@@ -63,36 +62,34 @@ const AddressPage = async ({
         <TabPanels>
           <TabPanel>
             <Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
-              <SoldVolumeCard data={soldAggregate} />
-              <BoughtVolumeCard data={boughtAggregate} />
-              <LatestTransactionsCard
-                latestBought={bought}
-                latestSold={sold}
-                totalTransactions={soldAggregate.count + boughtAggregate.count}
-              />
+              <BoughtVolumeCard address={address} />
+              <SoldVolumeCard address={address} />
+              {/* <LatestTransactionsCard
+                address={address}
+              /> */}
             </Grid>
             <div className="mt-6">
               <DirectedGraph address={address} />
             </div>
           </TabPanel>
-            <TabPanel>
-              <div className="mt-6">
-                <TransactionsTable
-                  address={address}
-                  query={getSellTransactions}
-                  title="Sell History"
-                />
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <div className="mt-6">
-                <TransactionsTable
-                  address={address}
-                  query={getBuyTransactions}
-                  title="Buy History"
-                />
-              </div>
-            </TabPanel>
+          <TabPanel>
+            <div className="mt-6">
+              <TransactionsTable
+                address={address}
+                query={getSellTransactions}
+                title="Sell History"
+              />
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="mt-6">
+              <TransactionsTable
+                address={address}
+                query={getBuyTransactions}
+                title="Buy History"
+              />
+            </div>
+          </TabPanel>
         </TabPanels>
       </TabGroup>
     </>

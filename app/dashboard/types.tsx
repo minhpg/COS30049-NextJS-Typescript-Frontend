@@ -41,3 +41,23 @@ export type TransactionTableResponse = {
     };
   };
 };
+
+export type DashboardDataResponse =  {
+  data: {
+    transactionsAggregate: TransactionAggregate;
+    getYearlyVolume: YearlyVolume[];
+  };
+}
+
+export type TransactionSearchData = {
+  hash: string
+}
+
+export type AddressSearchData = {
+  address: string
+}
+
+export type SearchDataResponse = {
+  addresses: AddressSearchData[]
+  transactions: TransactionSearchData[]
+}

@@ -5,37 +5,58 @@ export const getAddressStat = gql`
     addresses(where: { address: $address }) {
       address
       type
-      bought(options: { limit: 1, sort: { block_timestamp: DESC } }) {
-        hash
-        block_timestamp
-      }
-      sold(options: { limit: 1, sort: { block_timestamp: DESC } }) {
-        hash
-        block_timestamp
-      }
-      soldAggregate {
-        count
-        node {
-          value {
-            sum
-            min
-            max
-          }
-        }
-      }
-      boughtAggregate {
-        count
-        node {
-          value {
-            sum
-            min
-            max
-          }
+    }
+  }
+`;
+
+export const getBoughtStat = gql`
+query GetBoughtStat($address: String) {
+  addresses(where: { address: $address }) {
+    boughtAggregate {
+      count
+      node {
+        value {
+          sum
+          min
+          max
         }
       }
     }
   }
-`;
+}
+`
+
+export const getSoldStat = gql`
+query GetSoldStat($address: String) {
+  addresses(where: { address: $address }) {
+    soldAggregate {
+      count
+      node {
+        value {
+          sum
+          min
+          max
+        }
+      }
+    }
+  }
+}
+`
+
+export const getLatestTransactions = gql`
+query GetSoldStat($address: String) {
+  addresses(where: { address: $address }) {
+    sold(options: { limit: 1, sort: { block_timestamp: DESC } }) {
+      hash
+      block_timestamp
+    }
+    bought(options: { limit: 1, sort: { block_timestamp: DESC } }) {
+      hash
+      block_timestamp
+    }
+  }
+}
+`
 
 export const getGraphTransactions = gql`
   query GetGraphTransactions($address: String) {

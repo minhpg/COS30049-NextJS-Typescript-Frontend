@@ -47,3 +47,20 @@ export const getTransactions = gql`
   }
 `;
 
+export const searchQuery = gql`
+query search($query: String) {
+    addresses(
+    where: { address_STARTS_WITH: $query },
+    options: { limit: 5 }
+  ) {
+    address
+  }
+  transactions(
+    where: { hash_STARTS_WITH: $query },
+    options: { limit: 5 }
+  ) {
+    hash
+  }
+}
+`
+

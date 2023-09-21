@@ -12,19 +12,15 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className="container mx-auto flex flex-col h-screen justify-between">
+      <body>
         <ApolloClientProvider>
           {/* <ThemeProvider> */}
-          {children}
+          <div className="max-w-7xl min-h-screen mx-auto px-6 sm:px-8 mx-auto">
+            {children}
+          </div>
+
           {/* </ThemeProvider> */}
         </ApolloClientProvider>
-        <footer className="footer footer-center w-full p-6">
-          <div className="text-center">
-            <Text>
-              Copyright © 2022 -<a className="font-semibold"> bancorp</a>
-            </Text>
-          </div>
-        </footer>
       </body>
     </html>
   );

@@ -14,7 +14,7 @@ import {
   Text,
 } from "@tremor/react";
 import VolumeGraph from "@/components/dashboard/Graphs/VolumeGraph";
-import { TransactionAggregate, Transaction, YearlyVolume } from "./types";
+import { DashboardDataResponse, TransactionAggregate, YearlyVolume } from "./types";
 import { getDashboardData, getTransactions } from "./queries";
 import { getClient } from "../apollo/server-provider";
 
@@ -22,12 +22,7 @@ const DashboardPage = async () => {
   const client = getClient()
   const {
     data: { transactionsAggregate, getYearlyVolume },
-  }: {
-    data: {
-      transactionsAggregate: TransactionAggregate;
-      getYearlyVolume: YearlyVolume[];
-    };
-  } = await client.query({
+  }: DashboardDataResponse = await client.query({
     query: getDashboardData
   });
   return (

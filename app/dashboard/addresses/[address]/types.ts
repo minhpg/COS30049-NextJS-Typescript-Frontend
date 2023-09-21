@@ -1,10 +1,16 @@
 export type Address = {
   address: string;
   type: string;
-  bought: Transaction[];
+};
+
+export type BoughtStat = {
+  ought: Transaction[];
+  boughtAggregate: TransactionAggregate;
+};
+
+export type SoldStat = {
   sold: Transaction[];
   soldAggregate: TransactionAggregate;
-  boughtAggregate: TransactionAggregate;
 };
 
 export type Transaction = {
@@ -37,8 +43,7 @@ export type AddressStatResponse = {
   };
 };
 
-
-export const addressType = {
-  eoa: "Externally Owned Address",
-  contract: "Contract"
-}
+export const addressType: any = {
+  "eoa": "Externally Owned Address",
+  "contract": "Contract",
+};

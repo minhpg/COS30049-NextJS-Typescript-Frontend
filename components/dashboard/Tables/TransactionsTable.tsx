@@ -14,7 +14,6 @@ import {
 } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { dateTimetoDate, numberWithCommas, truncateAddress } from "@/utils";
-import { TransactionTableResponse } from "@/app/dashboard/types";
 import Link from "next/link";
 import {
   flexRender,
@@ -36,8 +35,9 @@ import {
 } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { apolloClient } from "@/app/apollo/client-provider";
-import { uniqueId } from "lodash";
 import { InfiniteQueryClientProvider } from "@/app/dashboard/query-client-provider";
+import { TransactionTableResponse } from "@/app/dashboard/types";
+import { useInView } from "react-intersection-observer";
 
 export default function TransactionsTable({
   address,
@@ -49,33 +49,34 @@ export default function TransactionsTable({
   title: string;
 }) {
   return (
-    <Card>
-      <div>
-        <Flex
-          className="space-x-0.5"
-          justifyContent="start"
-          alignItems="center"
-        >
-          <Title>{title || "Transaction History"}</Title>
-          <Icon
-            icon={InformationCircleIcon}
-            variant="simple"
-            tooltip="Shows recent transactions"
-          />
-        </Flex>
-      </div>
-      {/* <div className="flex space-x-2">
-        <Select className="max-w-full sm:max-w-xs" defaultValue="all">
-          <SelectItem value="all">All Performances</SelectItem>
-          <SelectItem value="overperforming">Overperforming</SelectItem>
-          <SelectItem value="average">Average</SelectItem>
-          <SelectItem value="underperforming">Underperforming</SelectItem>
-        </Select>
-      </div> */}
-      <InfiniteQueryClientProvider>
-        <DataTable address={address} query={query} title={title} />
-      </InfiniteQueryClientProvider>
-    </Card>
+    // <Card>
+    //   <div>
+    //     <Flex
+    //       className="space-x-0.5"
+    //       justifyContent="start"
+    //       alignItems="center"
+    //     >
+    //       <Title>{title || "Transaction History"}</Title>
+    //       <Icon
+    //         icon={InformationCircleIcon}
+    //         variant="simple"
+    //         tooltip="Shows recent transactions"
+    //       />
+    //     </Flex>
+    //   </div>
+    //   {/* <div className="flex space-x-2">
+    //     <Select className="max-w-full sm:max-w-xs" defaultValue="all">
+    //       <SelectItem value="all">All Performances</SelectItem>
+    //       <SelectItem value="overperforming">Overperforming</SelectItem>
+    //       <SelectItem value="average">Average</SelectItem>
+    //       <SelectItem value="underperforming">Underperforming</SelectItem>
+    //     </Select>
+    //   </div> */}
+
+    // </Card>
+    <InfiniteQueryClientProvider>
+      <DataTable address={address} query={query} title={title} />
+    </InfiniteQueryClientProvider>
   );
 }
 const limit = 10;
@@ -89,7 +90,7 @@ const DataTable = ({
   query: DocumentNode;
   title: string;
 }) => {
-  const rerender = useReducer(() => ({}), {})[1];
+  const { ref, inView } = useInView();
   const tableRef = useRef(null);
 
   const columns = useMemo(
@@ -213,25 +214,31 @@ const DataTable = ({
 
   const totalFetched = flatData?.length;
 
-  const fetchMoreOnBottomReached = useCallback(
-    (containerRefElement?: HTMLDivElement | null) => {
-      if (containerRefElement) {
-        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-        console.log(scrollHeight, scrollTop, clientHeight);
-        const scrolledToBottom = scrollHeight - scrollTop - clientHeight < 100;
-        const reachedEndData = !(totalFetched < totalRowCount);
-        if (scrolledToBottom && !reachedEndData && !isFetching) {
-          fetchNextPage();
-        }
-      }
-    },
-    [fetchNextPage, isFetching, totalFetched, totalRowCount]
-  );
+  // const fetchMoreOnBottomReached = useCallback(
+  //   (containerRefElement?: HTMLDivElement | null) => {
+  //     if (containerRefElement) {
+  //       const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+  //       console.log(scrollHeight, scrollTop, clientHeight);
+  //       const scrolledToBottom =
+  //         scrollHeight - scrollTop - clientHeight < 113*3 && scrollHeight > 0;
+  //       const reachedEndData = !(totalFetched < totalRowCount);
+  //       if (scrolledToBottom && !reachedEndData && !isFetching) {
+  //         fetchNextPage();
+  //       }
+  //     }
+  //   },
+  //   [fetchNextPage, isFetching, totalFetched, totalRowCount]
+  // );
 
-  // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  // // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  // useEffect(() => {
+  //   fetchMoreOnBottomReached(tableRef.current);
+  // }, [fetchMoreOnBottomReached]);
   useEffect(() => {
-    fetchMoreOnBottomReached(tableRef.current);
-  }, [fetchMoreOnBottomReached]);
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   const table = useReactTable({
     data: flatData,
@@ -260,18 +267,17 @@ const DataTable = ({
       : 0;
 
   return (
-    <Card
-      className="max-h-screen overflow-y-scroll mt-3"
-      onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+    <div
+      // onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
       ref={tableRef}
     >
-      <Table>
+      <Table className="relative">
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHeaderCell key={header.id}>
+                  <TableHeaderCell key={header.id} className="sticky">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -285,7 +291,7 @@ const DataTable = ({
         <TableBody>
           {paddingTop > 0 && (
             <TableRow>
-              <TableCell style={{ height: `${paddingTop}px` }} />
+              <TableCell style={{ height: `${paddingTop}px` }}></TableCell>
             </TableRow>
           )}
           {virtualRows.map((virtualRow) => {
@@ -307,28 +313,17 @@ const DataTable = ({
           })}
           {paddingBottom > 0 && (
             <TableRow>
-              <TableCell style={{ height: `${paddingBottom}px` }} />
+              <TableCell style={{ height: `${paddingBottom}px` }}></TableCell>
             </TableRow>
           )}
+
           <TableRow>
-            <TableCell colSpan={2}>
+            <TableCell colSpan={4} ref={ref}>
               Fetched {totalFetched} of {totalRowCount} rows.
             </TableCell>
-            {/* {totalFetched < totalRowCount && (
-              <TableCell
-                onClick={() => {
-                  console.log("clicked")
-                  if(!isFetching) fetchNextPage()
-                }}
-                colSpan={2}
-                className="hover:underline text-tremor-brand"
-              >
-                Load more
-              </TableCell>
-            )} */}
           </TableRow>
         </TableBody>
       </Table>
-    </Card>
+    </div>
   );
 };
