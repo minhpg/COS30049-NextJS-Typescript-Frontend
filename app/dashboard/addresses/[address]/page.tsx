@@ -8,18 +8,18 @@ import {
   Title,
   Text,
 } from "@tremor/react";
-import { Address, AddressStatResponse, addressType } from "./types";
 import SoldVolumeCard from "@/components/dashboard/address/Cards/SoldVolumeCard";
 import BoughtVolumeCard from "@/components/dashboard/address/Cards/BoughtVolumeCard";
 import LatestTransactionsCard from "@/components/dashboard/address/Cards/LatestTransactionsCard";
-import DirectedGraph from "@/components/dashboard/address/Graphs/DirectedGraph";
-import { getAddressStat } from "./queries";
-import { getClient } from "@/app/apollo/server-provider";
-import {
-  getSellTransactions,
-  getBuyTransactions,
-} from "@/app/dashboard/addresses/[address]/queries";
+
 import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
+
+import DirectedGraph from "@/components/dashboard/address/Graphs/DirectedGraph";
+
+import { getClient } from "@/apollo/server-provider";
+import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql"
+import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql"
+import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql"
 
 const AddressPage = async ({
   params: { address },
@@ -29,8 +29,8 @@ const AddressPage = async ({
   const client = getClient();
   const {
     data: { addresses },
-  }: AddressStatResponse = await client.query({
-    query: getAddressStat,
+  }: any = await client.query({
+    query: GetAddress,
     variables: {
       address,
     },
@@ -45,13 +45,13 @@ const AddressPage = async ({
     );
   }
 
-  const { type }: Address = addresses[0];
+  const { type } = addresses[0];
 
   return (
     <>
       <Title>{address}</Title>
       <Text>
-        <span className="font-light">Type of address:</span> {addressType[type]}
+        <span className="font-light">Type of address:</span> {type}
       </Text>
       <TabGroup className="mt-6">
         <TabList>
@@ -64,31 +64,23 @@ const AddressPage = async ({
             <Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
               <BoughtVolumeCard address={address} />
               <SoldVolumeCard address={address} />
-              {/* <LatestTransactionsCard
-                address={address}
-              /> */}
+              <LatestTransactionsCard address={address} />
             </Grid>
-            <div className="mt-6">
-              <DirectedGraph address={address} />
-            </div>
+            <DirectedGraph address={address} />
           </TabPanel>
           <TabPanel>
-            <div className="mt-6">
-              <TransactionsTable
-                address={address}
-                query={getSellTransactions}
-                title="Sell History"
-              />
-            </div>
+            <TransactionsTable
+              address={address}
+              query={GetSellTransactions}
+              title="Sell History"
+            />
           </TabPanel>
           <TabPanel>
-            <div className="mt-6">
-              <TransactionsTable
-                address={address}
-                query={getBuyTransactions}
-                title="Buy History"
-              />
-            </div>
+            <TransactionsTable
+              address={address}
+              query={GetBuyTransactions}
+              title="Buy History"
+            />
           </TabPanel>
         </TabPanels>
       </TabGroup>

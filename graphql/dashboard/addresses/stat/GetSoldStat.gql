@@ -1,0 +1,14 @@
+query GetSoldStat($address: String) {
+  addresses(where: { address: $address }) {
+    soldAggregate {
+      count
+      node {
+        value {
+          sum
+          min
+          max
+        }
+      }
+    }
+  }
+}

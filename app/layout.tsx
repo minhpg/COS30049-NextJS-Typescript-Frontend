@@ -1,8 +1,5 @@
 import "./globals.css";
-import { Text } from "@tremor/react";
 import type { Metadata } from "next";
-import ThemeProvider from "./theme-provider";
-import { ApolloClientProvider } from "./apollo/client-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,16 +9,7 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body>
-        <ApolloClientProvider>
-          {/* <ThemeProvider> */}
-          <div className="max-w-7xl min-h-screen mx-auto px-6 sm:px-8 mx-auto">
-            {children}
-          </div>
-
-          {/* </ThemeProvider> */}
-        </ApolloClientProvider>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 };

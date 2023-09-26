@@ -1,0 +1,18 @@
+query GetLatestTransactions($address: String) {
+  addresses(where: { address: $address }) {
+    sold(options: { limit: 1, sort: { block_timestamp: DESC } }) {
+      hash
+      block_timestamp
+    }
+    bought(options: { limit: 1, sort: { block_timestamp: DESC } }) {
+      hash
+      block_timestamp
+    }
+    boughtAggregate {
+      count
+    }
+    soldAggregate {
+      count
+    }
+  }
+}

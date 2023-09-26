@@ -1,59 +1,60 @@
-"use client";
-
-import {
-  TransactionAggregate,
-  Transaction,
-} from "@/app/dashboard/addresses/[address]/types";
-import { dateTimetoDate, numberWithCommas, truncateAddress } from "@/utils";
-import { BadgeDelta, Card, Flex, Metric, Text, Grid } from "@tremor/react";
+import { Card, Flex, Metric, Text, Grid } from "@tremor/react";
 import Link from "next/link";
 
-const LatestTransactionsCard = ({
-  latestBought,
-  latestSold,
-  totalTransactions
-}: {
-  latestBought: Transaction[];
-  latestSold: Transaction[];
-  totalTransactions: number
-}) => {
+import { getClient } from "@/apollo/server-provider";
+import GetLatestTransactions from "@/graphql/dashboard/addresses/stat/GetLatestTransactions.gql";
+import { dateTimetoDate, truncateAddress } from "@/utils";
+
+const LatestTransactionsCard = async ({ address }: { address: string }) => {
+  const client = getClient();
+  const { data, loading, error } = await client.query({
+    query: GetLatestTransactions,
+    variables: {
+      address,
+    },
+    errorPolicy: "ignore",
+  });
+
+  const current_address = data.addresses[0];
+
+  const { bought, sold, boughtAggregate, soldAggregate } = current_address;
   return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Flex alignItems="start">
         <div>
           <Text>Total Transactions</Text>
-          <Metric>{totalTransactions}</Metric>
+          <Metric>{boughtAggregate.count + soldAggregate.count}</Metric>
         </div>
       </Flex>
 
       <Grid className="mt-4">
-        {latestBought.length > 0 ? (
+        {bought.length > 0 ? (
           <>
             <Text className="font-light">Bought</Text>
             <Text>
               <Link
                 className="hover:underline text-tremor-brand"
-                href={`/dashboard/transactions/${latestBought[0].hash}`}
+                href={`/dashboard/transactions/${bought[0].hash}`}
               >
-                {truncateAddress(latestBought[0].hash)}
+                {truncateAddress(bought[0].hash)}
               </Link>{" "}
-              on {dateTimetoDate(latestBought[0].block_timestamp)}
+              on {dateTimetoDate(bought[0].block_timestamp)}
             </Text>
           </>
         ) : (
           <></>
         )}
-        {latestSold.length > 0 ? (
+        {sold.length > 0 ? (
           <>
             <Text className="font-light">Sold</Text>
             <Text>
               <Link
                 className="hover:underline text-tremor-brand"
-                href={`/dashboard/transactions/${latestSold[0].hash}`}
+                href={`/dashboard/transactions/${sold[0].hash}`}
               >
-                {truncateAddress(latestSold[0].hash)}
+                {truncateAddress(sold[0].hash)}
               </Link>{" "}
-              on {dateTimetoDate(latestSold[0].block_timestamp)}
+              on {dateTimetoDate(sold[0].block_timestamp)}
             </Text>
           </>
         ) : (

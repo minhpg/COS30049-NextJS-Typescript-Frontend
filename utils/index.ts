@@ -19,7 +19,8 @@ export const roundDollar = (num: number) => {
 
 // Function to add commas to large numbers
 export const numberWithCommas = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if(x>1) return x.toLocaleString("en-us");
+  return x.toFixed(16).replace(/\.?0+$/,"")
 };
 
 // Function to convert unix timestamp to Date
@@ -81,16 +82,16 @@ export const dateTimetoDate = (timestamp: string) => {
 
 export const dateTimeToEpoch = (timestamp: string) => {
   const a = new Date(timestamp);
-  return a.getSeconds();
+  return a.getTime() / 1000;
 };
 
 export const removeDuplicates = (a: any) => {
-  const seen = {};
+  const seen: any = {};
   const out = [];
   const len = a.length;
   let j = 0;
-  for (var i = 0; i < len; i++) {
-    var item = a[i];
+  for (let i = 0; i < len; i++) {
+    const item = a[i];
     if (seen[item] !== 1) {
       seen[item] = 1;
       out[j++] = item;
@@ -112,4 +113,8 @@ export const removeDuplicatedObjects = (array: any, field: any) => {
     return false;
   });
   return unique;
+};
+
+export const WeiToETH = (number: number) => {
+  return numberWithCommas(number / (10**18));
 };

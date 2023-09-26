@@ -1,0 +1,17 @@
+query {
+  transactionsAggregate {
+    count
+    block_timestamp {
+      min
+      max
+    }
+    gas {
+      average
+    }
+    value {
+      sum
+      max
+      average
+    }
+  }
+}

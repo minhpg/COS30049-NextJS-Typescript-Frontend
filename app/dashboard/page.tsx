@@ -1,9 +1,4 @@
-import ETHPriceCard from "@/components/dashboard/Cards/ETHPriceCard";
-import TransactionVolumeCard from "@/components/dashboard/Cards/TransactionVolumeCard";
-import TransactionsCountCard from "@/components/dashboard/Cards/TransactionsCountCard";
-import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
 import {
-  Card,
   Grid,
   Tab,
   TabList,
@@ -13,17 +8,41 @@ import {
   Title,
   Text,
 } from "@tremor/react";
+
+import ETHPriceCard from "@/components/dashboard/Cards/ETHPriceCard";
+import TransactionVolumeCard from "@/components/dashboard/Cards/TransactionVolumeCard";
+import TransactionsCountCard from "@/components/dashboard/Cards/TransactionsCountCard";
+
+import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
+
 import VolumeGraph from "@/components/dashboard/Graphs/VolumeGraph";
-import { DashboardDataResponse, TransactionAggregate, YearlyVolume } from "./types";
-import { getDashboardData, getTransactions } from "./queries";
-import { getClient } from "../apollo/server-provider";
+import NormalDistributionGraph from "@/components/dashboard/Graphs/NormalDistributionGraph";
+import TopAddressesGraph from "@/components/dashboard/Graphs/TopAddressesGraph";
+import ValueTransactionFeeScatterGraph from "@/components/dashboard/Graphs/ValueTransactionFeeScatterGraph";
+
+import { getClient } from "@/apollo/server-provider";
+import GetDashboardData from "@/graphql/dashboard/GetDashboardData.gql";
+import GetAllTransactions from "@/graphql/dashboard/GetAllTransactions.gql";
+import { NumberAggregate } from "@/types";
 
 const DashboardPage = async () => {
-  const client = getClient()
+  const client = getClient();
   const {
-    data: { transactionsAggregate, getYearlyVolume },
-  }: DashboardDataResponse = await client.query({
-    query: getDashboardData
+    data: { transactionsAggregate },
+  }: {
+    data: {
+      transactionsAggregate: {
+        count: number;
+        block_timestamp: {
+          min: string;
+          max: string;
+        };
+        gas: NumberAggregate;
+        value: NumberAggregate;
+      };
+    };
+  } = await client.query({
+    query: GetDashboardData,
   });
   return (
     <>
@@ -32,6 +51,7 @@ const DashboardPage = async () => {
       <TabGroup className="mt-6">
         <TabList>
           <Tab>Overview</Tab>
+          <Tab>Visualizing</Tab>
           <Tab>Recent Transactions</Tab>
         </TabList>
         <TabPanels>
@@ -41,14 +61,19 @@ const DashboardPage = async () => {
               <TransactionsCountCard data={transactionsAggregate} />
               <TransactionVolumeCard data={transactionsAggregate} />
             </Grid>
-            <div className="mt-6">
-              <VolumeGraph data={getYearlyVolume} />
-            </div>
+            <VolumeGraph />
           </TabPanel>
           <TabPanel>
-            <div className="mt-6">
-                <TransactionsTable address={""} query={getTransactions} title={"Transactions"}  />
-            </div>
+            <NormalDistributionGraph />
+            <TopAddressesGraph />
+            <ValueTransactionFeeScatterGraph />
+          </TabPanel>
+          <TabPanel>
+            <TransactionsTable
+              address={""}
+              query={GetAllTransactions}
+              title={"Transactions"}
+            />
           </TabPanel>
         </TabPanels>
       </TabGroup>

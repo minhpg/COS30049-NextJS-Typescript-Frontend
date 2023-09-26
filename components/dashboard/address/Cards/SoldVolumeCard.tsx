@@ -1,8 +1,5 @@
-import { getClient } from "@/app/apollo/server-provider";
-import { getSoldStat } from "@/app/dashboard/addresses/[address]/queries";
-import { numberWithCommas } from "@/utils";
+import { WeiToETH, numberWithCommas } from "@/utils";
 import {
-  BadgeDelta,
   Card,
   Flex,
   Metric,
@@ -10,10 +7,13 @@ import {
   Grid,
 } from "@tremor/react";
 
+import { getClient } from "@/apollo/server-provider";
+import GetSoldStat from "@/graphql/dashboard/addresses/stat/GetSoldStat.gql"
+
 const SoldVolumeCard = async ({address} : { address: string}) => {
   const client = getClient()
   const { data, error } = await client.query({
-    query: getSoldStat,
+    query: GetSoldStat,
     variables: {
       address
     },
@@ -21,13 +21,13 @@ const SoldVolumeCard = async ({address} : { address: string}) => {
   })
 
   if (!data) return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Text>No data!</Text>
     </Card>
   );
 
   if (error) return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Text>{error.message}</Text>
     </Card>
   );
@@ -35,23 +35,23 @@ const SoldVolumeCard = async ({address} : { address: string}) => {
   const { soldAggregate } = data.addresses[0]
   if (!soldAggregate.node)
   return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Text>No data!</Text>
     </Card>
   );
   return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Flex alignItems="start">
         <div>
           <Text>Sold Volume</Text>
-          <Metric>{numberWithCommas(soldAggregate.node.value.sum)}ETH</Metric>
+          <Metric>{WeiToETH(soldAggregate.node.value.sum)} ETH</Metric>
         </div>
       </Flex>
       <Text className="italic">over {numberWithCommas(soldAggregate.count)} transactions</Text>
 
       <Grid className="mt-4">
         <Text className="font-light">Highest sold</Text>
-        <Text>{numberWithCommas(soldAggregate.node.value.max)}ETH</Text>
+        <Text>{WeiToETH(soldAggregate.node.value.max)} ETH</Text>
       </Grid>
     </Card>
   );

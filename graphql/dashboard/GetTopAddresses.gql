@@ -1,0 +1,20 @@
+query GetTopAddresses {
+  getTopBuyAddresses {
+    address {
+      address
+    }
+    count
+  }
+
+#   getTopSellAddresses {
+#     address {
+#       address
+#     }
+#     count
+#   }
+
+  transactionAddressTypeAggregate {
+    type
+    count
+  }
+}

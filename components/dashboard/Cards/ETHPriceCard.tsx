@@ -1,5 +1,4 @@
-"use client";
-
+import { numberWithCommas } from "@/utils";
 import {
   BadgeDelta,
   Card,
@@ -9,20 +8,21 @@ import {
   Grid,
 } from "@tremor/react";
 
-const ETHPriceCard = () => {
+const ETHPriceCard = async () => {
+  const response = await fetch("https://api.coinbase.com/v2/exchange-rates?currency=ETH")
+  const { data: { rates } } = await response.json()
   return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Flex alignItems="start">
         <div>
           <Text>ETH Price</Text>
-          <Metric>$10,000</Metric>
+          <Metric>${numberWithCommas(parseFloat(rates.USD))}</Metric>
         </div>
-        <BadgeDelta>asdasd</BadgeDelta>
       </Flex>
       <Grid className="mt-4">
         <Text className="font-light">Equivalent to</Text>
-        <Text>0.3 BTC</Text>
-        <Text>30,000 DOGE</Text>
+        <Text>{numberWithCommas(parseFloat(rates.BTC))} BTC</Text>
+        <Text>{numberWithCommas(parseFloat(rates.DOGE))} DOGE</Text>
       </Grid>
     </Card>
   );

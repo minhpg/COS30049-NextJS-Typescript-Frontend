@@ -1,0 +1,21 @@
+  query GetTransactionDetails($hash: String) {
+    transactions(where: { hash: $hash }) {
+      block_hash
+      block_number
+      block_timestamp
+      gas
+      gas_price
+      gas_used
+      hash
+      input
+      transaction_fee
+      transaction_index
+      value
+      from_address {
+        address
+      }
+      to_address {
+        address
+      }
+    }
+  }

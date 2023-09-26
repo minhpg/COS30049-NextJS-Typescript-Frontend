@@ -1,6 +1,5 @@
 "use client";
 
-import { YearlyVolume } from "@/app/dashboard/types";
 import {
   Card,
   Title,
@@ -11,24 +10,47 @@ import {
   Tab,
 } from "@tremor/react";
 import { useState } from "react";
+import { useQuery } from "@apollo/client";
 
-const dataFormatter = (number: number) => {
-  // return "$ " + Intl.NumberFormat("us").format(number).toString();
-  return number;
-};
+import GetMonthlyVolume from "@/graphql/dashboard/GetMonthlyVolume.gql";
+import { VolumeStat } from "@/types";
 
-const VolumeGraph = ({ data }: { data: YearlyVolume[] }) => {
-  const categoriesList = ["transactionsCount", "totalValue"];
+const VolumeGraph = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const selectedCategory = categoriesList[selectedIndex];
+
+  const categoriesList = ["Transaction Count", "Total Value", "Average Value"];
+  const dataKeys = ["transactionsCount", "totalValue", "averageValue"];
+
+  const selectedCategory = dataKeys[selectedIndex];
+
+  const { data } = useQuery(GetMonthlyVolume);
+
+  if (!data)
+    return (
+      <Card className="mt-6">
+        <Text>Loading...</Text>
+      </Card>
+    );
+
+  const dataParsed = data.getMonthlyVolume.map(
+    ({ year, month, value: { sum, average }, count }: VolumeStat) => {
+      return {
+        month: `${month}/${year}`,
+        totalValue: sum / 10 ** 18,
+        averageValue: average / 10 ** 18,
+        transactionsCount: count,
+      };
+    }
+  );
+
   return (
-    <Card>
+    <Card className="mt-6">
       <div className="md:flex justify-between">
         <div>
           <Title>Transaction Volume</Title>
-          <Text> Shows yearly transaction volume</Text>
+          <Text> Shows monthly transaction volume</Text>
         </div>
-        <div>
+        <div className="mt-6 md:mt-0 overflow-x-scroll no-scrollbar">
           <TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
             <TabList color="gray" variant="solid">
               {categoriesList.map((category) => (
@@ -39,9 +61,9 @@ const VolumeGraph = ({ data }: { data: YearlyVolume[] }) => {
         </div>
       </div>
       <AreaChart
-        className="h-96"
-        data={data}
-        index="year"
+        className="h-96 mt-6 md:mt-0"
+        data={dataParsed}
+        index="month"
         categories={[selectedCategory]}
         colors={["indigo"]}
       />

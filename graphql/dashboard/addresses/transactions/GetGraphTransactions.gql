@@ -1,0 +1,27 @@
+  query GetGraphTransactions($address: String) {
+    addresses(where: { address: $address }) {
+      address
+      bought {
+        from_address {
+          address
+        }
+        to_address {
+          address
+        }
+        value
+        hash
+        block_timestamp
+      }
+      sold {
+        from_address {
+          address
+        }
+        to_address {
+          address
+        }
+        value
+        hash
+        block_timestamp
+      }
+    }
+  }

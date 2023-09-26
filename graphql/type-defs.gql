@@ -1,0 +1,293 @@
+enum AddressType {
+  eoa
+  contract
+}
+
+type Address {
+  address: String!
+  type: AddressType
+
+  bought: [Transaction!]! @relationship(type: "BUY", direction: OUT)
+  sold: [Transaction!]! @relationship(type: "SELL", direction: OUT)
+}
+
+type Transaction {
+  block_hash: String!
+  block_number: Int!
+  block_timestamp: DateTime!
+  gas: Float!
+  gas_price: Float!
+  gas_used: Float!
+  hash: String!
+  input: String!
+  transaction_fee: Float!
+  transaction_index: Int!
+  value: Float!
+
+  from_address: Address! @relationship(type: "SELL", direction: IN)
+  to_address: Address! @relationship(type: "BUY", direction: IN)
+}
+
+type NumberAggregate {
+  sum: Float!
+  average: Float!
+  min: Float!
+  max: Float!
+}
+
+type VolumeStat {
+  year: Int
+  month: Int
+  day: Int
+  count: Int
+  value: NumberAggregate
+}
+
+type DistributionStat {
+  total: Int!
+  min: Float!
+  minNonZero: Float!
+  max: Float!
+  mean: Float!
+  stdev: Float!
+}
+
+type TransactionCount {
+  address: Address
+  count: Int!
+}
+
+type TransactionEdgeAggregate {
+  from_address: Address
+  to_address: Address
+  count: Int
+  value: NumberAggregate
+}
+
+type TransactionAddressTypeAggregate {
+  type: AddressType
+  count: Int
+  value: NumberAggregate
+}
+
+type Query {
+  getTopBuyAddresses(limit: Int): [TransactionCount]
+    @cypher(
+      statement: """
+      MATCH (a:Address)-[:BUY]-(t:Transaction)
+      WITH a.address as address, 
+      a.type as type,
+      count(t) AS bought
+      RETURN {
+        address: {
+            address: address,
+            type: type
+        },
+        count: bought
+      } as result
+      ORDER BY bought DESC LIMIT 5
+      """
+      columnName: "result"
+    )
+
+  getTopSellAddresses(limit: Int): [TransactionCount]
+    @cypher(
+      statement: """
+      MATCH (a:Address)-[:SELL]-(t:Transaction)
+      WITH a.address as address, 
+      a.type as type,
+      count(t) AS sold
+      RETURN {
+        address: {
+            address: address,
+            type: type
+        },
+        count: sold
+      } as result
+      ORDER BY sold DESC LIMIT $limit
+      """
+      columnName: "result"
+    )
+
+  transactionAddressTypeAggregate: [TransactionAddressTypeAggregate]
+    @cypher(
+      statement: """
+      MATCH
+        (t:Transaction)-[:BUY|:SELL]-(a:Address)
+      WITH
+        count(t)/2 as transactionsCount,
+        sum(t.value) as totalValue,
+        avg(t.value) as averageValue,
+        min(t.value) as minValue,
+        max(t.value) as maxValue,
+        a.type as type
+      RETURN {
+        type: type,
+        count: transactionsCount,
+        value: {
+          sum: totalValue,
+          average: averageValue,
+          min: minValue,
+          max: maxValue
+        }
+      } as result
+      """
+      columnName: "result"
+    )
+
+  getYearlyVolume: [VolumeStat]
+    @cypher(
+      statement: """
+      MATCH (transaction:Transaction)
+      WITH
+        transaction.block_timestamp.year as year,
+        count(*) as transactionsCount,
+        sum(transaction.value) as totalValue,
+        avg(transaction.value) as averageValue,
+        min(transaction.value) as minValue,
+        max(transaction.value) as maxValue
+      RETURN {
+        year: year,
+        count: transactionsCount,
+        value: {
+          sum: totalValue,
+          average: averageValue,
+          min: minValue,
+          max: maxValue
+        }
+      } as result
+      """
+      columnName: "result"
+    )
+
+  getMonthlyVolume: [VolumeStat]
+    @cypher(
+      statement: """
+      MATCH (transaction:Transaction)
+      WITH
+        transaction.block_timestamp.month as month,
+        transaction.block_timestamp.year as year,
+        count(*) as transactionsCount,
+        sum(transaction.value) as totalValue,
+        avg(transaction.value) as averageValue,
+        min(transaction.value) as minValue,
+        max(transaction.value) as maxValue
+      ORDER BY COALESCE(month ,"") + '/' + COALESCE(year ,"") ASC
+      RETURN
+      {
+        year: year,
+        month: month,
+        count: transactionsCount,
+        value: {
+          sum: totalValue,
+          average: averageValue,
+          min: minValue,
+          max: maxValue
+        }
+      } as result
+      """
+      columnName: "result"
+    )
+
+  getValueDistribution: DistributionStat
+    @cypher(
+      statement: """
+      MATCH (t:Transaction)
+      RETURN apoc.agg.statistics(t.value) AS result
+      """
+      columnName: "result"
+    )
+
+  getGasPriceDistribution: DistributionStat
+    @cypher(
+      statement: """
+      MATCH (t:Transaction)
+      RETURN apoc.agg.statistics(t.gas_price) AS result
+      """
+      columnName: "result"
+    )
+
+  transactionEdgeAggregate(address: String): [TransactionEdgeAggregate]
+    @cypher(
+      statement: """
+      MATCH
+        (t:Transaction),
+        (t)<-[:SELL]-(seller:Address{address:$address}),
+        (t)<-[:BUY]-(buyer:Address)
+      WITH
+        seller,
+        collect(DISTINCT buyer) as buyers
+      UNWIND buyers as buyer
+      MATCH
+        (t:Transaction),
+        (t)<-[:SELL]-(seller),
+        (t)<-[:BUY]-(buyer)
+      WITH
+        seller,
+        buyer,
+        count(t) as transactionsCount,
+        sum(t.value) as totalValue,
+        avg(t.value) as averageValue,
+        min(t.value) as minValue,
+        max(t.value) as maxValue
+      RETURN {
+        from_address: {
+          address: seller.address,
+          type: seller.type
+        },
+        to_address: {
+          address: buyer.address,
+          type: buyer.type
+        },
+        count: transactionsCount,
+        value: {
+          sum: totalValue,
+          average: averageValue,
+          min: minValue,
+          max: maxValue
+        }
+      } as result
+
+      UNION
+
+      MATCH
+        (t:Transaction),
+        (t)<-[:SELL]-(seller:Address),
+        (t)<-[:BUY]-(buyer:Address{address:$address})
+      WITH
+        buyer,
+        collect(DISTINCT seller) as sellers
+      UNWIND sellers as seller
+      MATCH
+        (t:Transaction),
+        (t)<-[:SELL]-(seller),
+        (t)<-[:BUY]-(buyer)
+      WITH
+        seller,
+        buyer,
+        count(t) as transactionsCount,
+        sum(t.value) as totalValue,
+        avg(t.value) as averageValue,
+        min(t.value) as minValue,
+        max(t.value) as maxValue
+      RETURN {
+        from_address: {
+          address: seller.address,
+          type: seller.type
+        },
+        to_address: {
+          address: buyer.address,
+          type: buyer.type
+        },
+        count: transactionsCount,
+        value: {
+          sum: totalValue,
+          average: averageValue,
+          min: minValue,
+          max: maxValue
+        }
+      } as result
+      """
+      columnName: "result"
+    )
+}

@@ -1,0 +1,6 @@
+query GetAddress($address: String) {
+  addresses(where: { address: $address }) {
+    address
+    type
+  }
+}

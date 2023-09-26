@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer footer-center w-full p-6">
       <div className="text-center">
         <Text>
-          Copyright © 2022 - <FooterLogo />
+          Copyright © {new Date().getFullYear()} - <FooterLogo />
         </Text>
       </div>
     </footer>

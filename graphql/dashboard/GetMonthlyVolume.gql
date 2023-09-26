@@ -1,0 +1,11 @@
+query GetMonthlyVolume {
+  getMonthlyVolume {
+    year
+    month
+    count
+    value {
+      sum
+      average
+    }
+  }
+}

@@ -1,19 +1,14 @@
 "use client";
 
 import {
-  Icon,
   Table,
   TableRow,
   TableCell,
   TableHead,
   TableHeaderCell,
   TableBody,
-  Title,
-  Flex,
-  Card,
+  Badge,
 } from "@tremor/react";
-import { InformationCircleIcon } from "@heroicons/react/solid";
-import { dateTimetoDate, numberWithCommas, truncateAddress } from "@/utils";
 import Link from "next/link";
 import {
   flexRender,
@@ -25,21 +20,17 @@ import {
 } from "@tanstack/react-table";
 import { useVirtual } from "@tanstack/react-virtual";
 import { DocumentNode } from "graphql";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { apolloClient } from "@/app/apollo/client-provider";
-import { InfiniteQueryClientProvider } from "@/app/dashboard/query-client-provider";
-import { TransactionTableResponse } from "@/app/dashboard/types";
 import { useInView } from "react-intersection-observer";
 
-export default function TransactionsTable({
+import { WeiToETH, dateTimetoDate, truncateAddress } from "@/utils";
+
+import { apolloClient } from "@/apollo/client-provider";
+import { InfiniteQueryClientProvider } from "@/app/dashboard/query-client-provider";
+import { Transactions } from "@/types";
+
+const TransactionsTable = ({
   address,
   query,
   title,
@@ -47,38 +38,16 @@ export default function TransactionsTable({
   address: string;
   query: DocumentNode;
   title: string;
-}) {
+}) => {
   return (
-    // <Card>
-    //   <div>
-    //     <Flex
-    //       className="space-x-0.5"
-    //       justifyContent="start"
-    //       alignItems="center"
-    //     >
-    //       <Title>{title || "Transaction History"}</Title>
-    //       <Icon
-    //         icon={InformationCircleIcon}
-    //         variant="simple"
-    //         tooltip="Shows recent transactions"
-    //       />
-    //     </Flex>
-    //   </div>
-    //   {/* <div className="flex space-x-2">
-    //     <Select className="max-w-full sm:max-w-xs" defaultValue="all">
-    //       <SelectItem value="all">All Performances</SelectItem>
-    //       <SelectItem value="overperforming">Overperforming</SelectItem>
-    //       <SelectItem value="average">Average</SelectItem>
-    //       <SelectItem value="underperforming">Underperforming</SelectItem>
-    //     </Select>
-    //   </div> */}
-
-    // </Card>
     <InfiniteQueryClientProvider>
       <DataTable address={address} query={query} title={title} />
     </InfiniteQueryClientProvider>
   );
-}
+};
+
+export default TransactionsTable;
+
 const limit = 10;
 
 const DataTable = ({
@@ -145,18 +114,11 @@ const DataTable = ({
         cell: (info: any) => dateTimetoDate(info.getValue()),
       },
       {
-        accessorKey: "details",
-        header: "Details",
+        accessorKey: "value",
+        header: "Value",
         cell: (info: any) => {
-          const { gas, value } = info.getValue();
-          return (
-            <>
-              <p className="font-light">Gas:</p>
-              <p>{numberWithCommas(gas)}</p>
-              <p className="font-light">Value:</p>
-              <p>{numberWithCommas(parseInt(value))}ETH</p>
-            </>
-          );
+          const value = info.getValue();
+          return <Badge color="green">{WeiToETH(value)} ETH</Badge>;
         },
       },
     ],
@@ -169,8 +131,16 @@ const DataTable = ({
     [title, sorting],
     async ({ pageParam = 0 }) => {
       const offset = pageParam * limit;
-      console.log("fetching page " + pageParam);
-      const { data }: TransactionTableResponse = await apolloClient.query({
+      const {
+        data,
+      }: {
+        data: {
+          transactions: Transactions;
+          transactionsAggregate: {
+            count: number
+          }
+        };
+      } = await apolloClient.query({
         query,
         variables: {
           address,
@@ -189,24 +159,23 @@ const DataTable = ({
 
   const flatData = useMemo(
     () =>
-      data?.pages?.flatMap(({ transactions }) => {
-        return transactions.map(
-          ({ hash, block_timestamp, from_address, to_address, gas, value }) => {
-            return {
-              hash,
-              block_timestamp,
-              between: {
-                from_address,
-                to_address,
-              },
-              details: {
-                gas,
+      data?.pages?.flatMap(
+        ({ transactions }: { transactions: Transactions }) => {
+          return transactions.map(
+            ({ hash, block_timestamp, from_address, to_address, value }) => {
+              return {
+                hash,
+                block_timestamp,
+                between: {
+                  from_address,
+                  to_address,
+                },
                 value,
-              },
-            };
-          }
-        );
-      }) ?? [],
+              };
+            }
+          );
+        }
+      ) ?? [],
     [data]
   );
 
@@ -214,26 +183,6 @@ const DataTable = ({
 
   const totalFetched = flatData?.length;
 
-  // const fetchMoreOnBottomReached = useCallback(
-  //   (containerRefElement?: HTMLDivElement | null) => {
-  //     if (containerRefElement) {
-  //       const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-  //       console.log(scrollHeight, scrollTop, clientHeight);
-  //       const scrolledToBottom =
-  //         scrollHeight - scrollTop - clientHeight < 113*3 && scrollHeight > 0;
-  //       const reachedEndData = !(totalFetched < totalRowCount);
-  //       if (scrolledToBottom && !reachedEndData && !isFetching) {
-  //         fetchNextPage();
-  //       }
-  //     }
-  //   },
-  //   [fetchNextPage, isFetching, totalFetched, totalRowCount]
-  // );
-
-  // // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
-  // useEffect(() => {
-  //   fetchMoreOnBottomReached(tableRef.current);
-  // }, [fetchMoreOnBottomReached]);
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -267,10 +216,7 @@ const DataTable = ({
       : 0;
 
   return (
-    <div
-      // onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
-      ref={tableRef}
-    >
+    <div ref={tableRef} className="mt-6">
       <Table className="relative">
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (

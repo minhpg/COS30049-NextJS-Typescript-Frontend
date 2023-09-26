@@ -1,26 +1,30 @@
-"use client";
-
-import {
-  Card,
-  Flex,
-  Metric,
-  Text,
-  Grid,
-  Badge,
-} from "@tremor/react";
+import { Card, Flex, Metric, Text, Grid, Badge } from "@tremor/react";
 import { dateTimeToEpoch, numberWithCommas } from "@/utils";
-import { TransactionAggregate } from "@/app/dashboard/types";
+import { NumberAggregate } from "@/types";
 
-const TransactionsCountCard = ({ data }: { data: TransactionAggregate }) => {
+const TransactionsCountCard = ({
+  data,
+}: {
+  data: {
+    count: number;
+    block_timestamp: {
+      min: string;
+      max: string;
+    };
+    gas: NumberAggregate;
+  };
+}) => {
   const {
     count: transactionsCount,
     block_timestamp: { min: transactionTimeMin, max: transactionTimeMax },
     gas: { average: gasAverage },
   } = data;
 
-  const tps = transactionsCount / (dateTimeToEpoch(transactionTimeMax) - dateTimeToEpoch(transactionTimeMin));
+  const tps =
+    transactionsCount /
+    (dateTimeToEpoch(transactionTimeMax) - dateTimeToEpoch(transactionTimeMin));
   return (
-    <Card className="max-w-lg mx-auto">
+    <Card className="mx-auto">
       <Flex alignItems="start">
         <div>
           <Text>Total Txn</Text>
@@ -30,9 +34,7 @@ const TransactionsCountCard = ({ data }: { data: TransactionAggregate }) => {
       </Flex>
       <Grid className="mt-4">
         <Text className="font-light">Average Gas Price</Text>
-        <Text>
-          {numberWithCommas(parseFloat(gasAverage.toPrecision(6)))} Gwei
-        </Text>
+        <Text>{numberWithCommas(gasAverage)} Wei</Text>
       </Grid>
     </Card>
   );

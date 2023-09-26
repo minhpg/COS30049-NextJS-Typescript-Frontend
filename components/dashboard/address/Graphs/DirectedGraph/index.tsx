@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Graphin, { Layout, Behaviors } from "@antv/graphin";
 import {
   Select,
   Card,
@@ -12,20 +11,16 @@ import {
   ProgressBar,
   Icon,
 } from "@tremor/react";
-
 import { InformationCircleIcon } from "@heroicons/react/solid";
 
-import { useQuery } from "@apollo/client";
+import Graphin, { Layout, Behaviors } from "@antv/graphin";
 import { reduceData } from "./utils";
 import { layouts } from "./graph-layouts";
-import {
-  EdgeEvent,
-  NodeEvent,
-  edgeTooltip,
-  nodeTooltip,
-} from "./GraphBehaviours";
-import { getGraphTransactions } from "@/app/dashboard/addresses/[address]/queries";
+import { NodeEvent } from "./graph-behaviours";
 import "./fix-rounded.css";
+
+import { useQuery } from "@apollo/client";
+import GetTransactionEdgeAggregate from "@/graphql/dashboard/addresses/transactions/GetTransactionEdgeAggregate.gql";
 
 const LayoutSelector = ({
   value,
@@ -50,7 +45,7 @@ const LayoutSelector = ({
 };
 
 const DirectedGraph = ({ address }: { address: string }) => {
-  const [type, setLayout] = useState("grid");
+  const [type, setLayout] = useState("circular");
   const handleChange = (value: string): void => {
     setLayout(value);
   };
@@ -58,7 +53,7 @@ const DirectedGraph = ({ address }: { address: string }) => {
   const layout = layouts.find((item) => item.type === type);
 
   return (
-    <Card>
+    <Card className="mt-6">
       <Flex>
         <Flex className="space-x-0.5" justifyContent="start">
           <Title>Visualization</Title>
@@ -84,30 +79,25 @@ const DirectedGraph = ({ address }: { address: string }) => {
 const { ZoomCanvas, DragNode, ActivateRelations } = Behaviors;
 
 const Graph = ({ address, layout }: { address: string; layout?: Layout }) => {
-  const { data, loading, error } = useQuery(getGraphTransactions, {
+  const { data, loading, error } = useQuery(GetTransactionEdgeAggregate, {
     variables: {
       address,
     },
   });
 
   if (loading) return <Text>Loading...</Text>;
-  // {
-  //   return <GraphLoadingProgress />
-  // }
 
   if (error) return <Text>{error.message}</Text>;
 
   return (
     <Card className="rounded-none p-0 mt-6">
       <Graphin
-        data={reduceData(data?.addresses[0])}
+        data={reduceData(data)}
         layout={layout}
         height={500}
         className="rounded-xl"
-        plugins={[nodeTooltip, edgeTooltip]}
         autopaint={false}
       >
-        <EdgeEvent />
         <NodeEvent />
         <ActivateRelations trigger="mouseenter" />
       </Graphin>

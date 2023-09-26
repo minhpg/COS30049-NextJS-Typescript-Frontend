@@ -1,0 +1,20 @@
+query GetSellTransactions($address: String, $offset: Int, $limit: Int) {
+  transactions(
+    where: { from_address: { address: $address } }
+    options: { offset: $offset, limit: $limit, sort: { block_timestamp: DESC } }
+  ) {
+    hash
+    block_timestamp
+    from_address {
+      address
+    }
+    to_address {
+      address
+    }
+    transaction_fee
+    value
+  }
+  transactionsAggregate(where: { from_address: { address: $address } }) {
+    count
+  }
+}
