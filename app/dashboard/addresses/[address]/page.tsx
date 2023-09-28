@@ -13,7 +13,7 @@ import SoldVolumeCard from "@/components/dashboard/address/Cards/SoldVolumeCard"
 import BoughtVolumeCard from "@/components/dashboard/address/Cards/BoughtVolumeCard";
 import LatestTransactionsCard from "@/components/dashboard/address/Cards/LatestTransactionsCard";
 
-import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
+import TransactionsTable from "@/components/dashboard/address/Graphs/DirectedGraph/G6/ContextMenus/TransactionsTable";
 
 import DirectedGraph from "@/components/dashboard/address/Graphs/DirectedGraph";
 
@@ -21,7 +21,7 @@ import { getClient } from "@/apollo/server-provider";
 import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql";
 import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql";
 import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql";
-import { Address, AddressType, AddressTypeFull, Addresses } from "@/types";
+import { AddressTypeFull, Addresses } from "@/types";
 
 const AddressPage = async ({
   params: { address },

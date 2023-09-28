@@ -20,8 +20,7 @@ const Documentation = () => {
       <TabGroup className="mt-6">
         <TabList>
           <Tab>Overview</Tab>
-          <Tab>Transactions GraphQL</Tab>
-          <Tab>REST API</Tab>
+          <Tab>GraphQL</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -29,9 +28,6 @@ const Documentation = () => {
           </TabPanel>
           <TabPanel className="h-full">
             <GraphQLExplorer />
-          </TabPanel>
-          <TabPanel>
-            <Swagger />
           </TabPanel>
         </TabPanels>
       </TabGroup>

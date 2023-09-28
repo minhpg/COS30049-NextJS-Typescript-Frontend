@@ -10,6 +10,6 @@ const server = async () => {
 const handler = startServerAndCreateNextHandler(await server());
 
 export { 
-  // handler as GET, 
+  handler as GET, 
   handler as POST 
 };

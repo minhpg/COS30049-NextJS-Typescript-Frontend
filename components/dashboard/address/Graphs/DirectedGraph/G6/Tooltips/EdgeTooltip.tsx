@@ -2,38 +2,37 @@ import { TransactionEdgeAggregate } from "@/types";
 import { WeiToETH } from "@/utils";
 import { EdgeConfig } from "@antv/g6";
 import { Card, Text } from "@tremor/react";
+import Link from "next/link";
 
 export type IEdgeTooltipModel = Partial<EdgeConfig> & {
   data: TransactionEdgeAggregate;
 };
 
-const EdgeTooltip = ({
-  model,
-  x,
-  y,
-}: {
+export interface IEdgeTooltipProps {
   model: IEdgeTooltipModel;
-  x: number;
-  y: number;
-}) => {
+}
+
+const EdgeTooltip = ({ model }: IEdgeTooltipProps) => {
   const { data } = model;
   if (!data) return;
   return (
-    <Card
-      className="z-40 w-80 break-all p-5 absolute"
-      style={{ top: `${y}px`, left: `${x}px` }}
-    >
-      <div>
-        <Text className="text-xs">
-          <span className="font-light">From: </span>
-          <span className="text-tremor-brand">{data.from_address.address}</span>
-        </Text>
-        <Text className="text-xs">
-          <span className="font-light">To: </span>
-          <span className="text-tremor-brand">{data.to_address.address}</span>
-        </Text>
+    <>
+      <Text className="text-sm">Transactions</Text>
+      <div className="mt-3">
+        <Text className="font-light text-xs">From: </Text>
+        <Link href={`/dashboard/addresses/${data.from_address.address}`}>
+          <Text className="text-xs text-tremor-brand hover:underline">
+            {data.from_address.address}
+          </Text>
+        </Link>
+        <Text className="font-light text-xs">To: </Text>
+        <Link href={`/dashboard/addresses/${data.to_address.address}`}>
+          <Text className="text-xs text-tremor-brand hover:underline">
+            {data.to_address.address}
+          </Text>
+        </Link>
       </div>
-      <div className="mt-1">
+      <div className="mt-3">
         <Text className="text-xs">
           <span className="font-light">Count: </span>
           <span>{data.count}</span>
@@ -43,7 +42,7 @@ const EdgeTooltip = ({
           <span>{WeiToETH(data.value.sum)} ETH</span>
         </Text>
       </div>
-    </Card>
+    </>
   );
 };
 

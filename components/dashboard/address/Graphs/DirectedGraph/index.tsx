@@ -15,6 +15,7 @@ import { InformationCircleIcon } from "@heroicons/react/solid";
 import { Layout } from "@antv/graphin";
 import { layouts } from "./graph-layouts";
 import G6Graph from "./G6";
+import GraphinGraph from "./Graphin";
 
 const LayoutSelector = ({
   value,
@@ -65,6 +66,7 @@ const DirectedGraph = ({ address }: { address: string }) => {
         </Flex>
       </Flex>
       <G6Graph address={address} layout={layout} />
+      {/* <GraphinGraph address={address} layout={layout} /> */}
     </Card>
   );
 };

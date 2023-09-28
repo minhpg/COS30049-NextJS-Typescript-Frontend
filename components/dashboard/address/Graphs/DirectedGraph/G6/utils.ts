@@ -1,10 +1,11 @@
 "use client";
 
 import { TransactionEdgeAggregate } from "@/types";
-import { WeiToETH, removeDuplicates, truncateAddress } from "@/utils";
+import { WeiToETH, removeDuplicatedObjects, truncateAddress } from "@/utils";
 
 import G6 from "@antv/g6";
 import { IUserEdge, IUserNode } from "@antv/graphin";
+import { Address } from "cluster";
 
 interface IReduceData {
   nodes: IUserNode[];
@@ -15,14 +16,14 @@ export const reduceData = (data: {
   transactionEdgeAggregate: TransactionEdgeAggregate[];
 }): IReduceData => {
   const transactionEdges = data.transactionEdgeAggregate;
-  const addresses = removeDuplicates([
-    ...transactionEdges.map(({ from_address: { address } }) => {
-      return address;
+  const addresses = removeDuplicatedObjects([
+    ...transactionEdges.map(({ from_address }) => {
+      return from_address;
     }),
-    ...transactionEdges.map(({ to_address: { address } }) => {
-      return address;
+    ...transactionEdges.map(({ to_address }) => {
+      return to_address;
     }),
-  ]);
+  ], "address");
 
   const mapTransactionToEdge = (data: TransactionEdgeAggregate): IUserEdge  => {
     const {
@@ -46,15 +47,16 @@ export const reduceData = (data: {
   };
 
   const offsetDiff = 10;
-  const multiEdgeType = "quadratic";
+  const multiEdgeType = "arc";
   const singleEdgeType = "line";
   const loopEdgeType = "loop";
 
   return {
-    nodes: addresses.map((address) => {
+    nodes: addresses.map((address: Address) => {
       return {
-        id: address,
-        label: truncateAddress(address),
+        id: address.address,
+        label: truncateAddress(address.address),
+        data: address,
         type: "node-address"
       };
     }),

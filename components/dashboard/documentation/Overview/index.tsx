@@ -19,7 +19,7 @@ const OverviewTailwind = async () => {
 };
 
 const Overview = async () => {
-  const markdownData = await readFile("./overview.md");
+  const markdownData = await readFile("./README.md");
   return (
     <Card className="p-1 mt-6">
       <ReactMarkdown children={markdownData.toString()} className="markdown-body"/>

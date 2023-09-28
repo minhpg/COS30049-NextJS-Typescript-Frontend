@@ -1,0 +1,22 @@
+query GetFullAddressStat($address: String) {
+  addresses(where: { address: $address }) {
+    address
+    type
+    boughtAggregate {
+      count
+      node {
+        value {
+          sum
+        }
+      }
+    }
+    soldAggregate {
+      count
+      node {
+        value {
+          sum
+        }
+      }
+    }
+  }
+}

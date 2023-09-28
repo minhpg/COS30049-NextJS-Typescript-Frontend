@@ -4,9 +4,11 @@
       bought {
         from_address {
           address
+          type
         }
         to_address {
           address
+          type
         }
         value
         hash

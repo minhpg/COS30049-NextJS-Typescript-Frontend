@@ -13,7 +13,7 @@ import ETHPriceCard from "@/components/dashboard/Cards/ETHPriceCard";
 import TransactionVolumeCard from "@/components/dashboard/Cards/TransactionVolumeCard";
 import TransactionsCountCard from "@/components/dashboard/Cards/TransactionsCountCard";
 
-import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
+import TransactionsTable from "@/components/dashboard/address/Graphs/DirectedGraph/G6/ContextMenus/TransactionsTable";
 
 import VolumeGraph from "@/components/dashboard/Graphs/VolumeGraph";
 import NormalDistributionGraph from "@/components/dashboard/Graphs/NormalDistributionGraph";
