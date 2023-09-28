@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
 import Link from "next/link";
+import { Flex } from "@tremor/react";
+
 import { NavbarLogo } from "@/components/Logo";
-import { Button, Flex } from "@tremor/react";
 
 const Navbar = () => {
   const [top, setTop] = useState<boolean>(true);
 
   // detect whether user has scrolled the page down by 10px
   const scrollHandler = () => {
-    window.pageYOffset > 10 ? setTop(false) : setTop(true);
+    window.scrollY > 10 ? setTop(false) : setTop(true);
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Navbar = () => {
           </div>
 
           <Flex className="space-x-6 text-md" justifyContent="end">
-            <Link href="/auth">Sign in</Link>
+            <Link href="/dashboard">Sign in</Link>
           </Flex>
         </div>
       </div>

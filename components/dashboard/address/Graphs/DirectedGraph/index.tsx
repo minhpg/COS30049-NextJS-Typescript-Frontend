@@ -1,26 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Select,
   Card,
   SelectItem,
   Flex,
   Title,
-  Text,
-  ProgressBar,
   Icon,
+  Text,
 } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 
-import Graphin, { Layout, Behaviors } from "@antv/graphin";
-import { reduceData } from "./utils";
+import { Layout } from "@antv/graphin";
 import { layouts } from "./graph-layouts";
-import { NodeEvent } from "./graph-behaviours";
-import "./fix-rounded.css";
-
-import { useQuery } from "@apollo/client";
-import GetTransactionEdgeAggregate from "@/graphql/dashboard/addresses/transactions/GetTransactionEdgeAggregate.gql";
+import G6Graph from "./G6";
 
 const LayoutSelector = ({
   value,
@@ -45,7 +39,7 @@ const LayoutSelector = ({
 };
 
 const DirectedGraph = ({ address }: { address: string }) => {
-  const [type, setLayout] = useState("circular");
+  const [type, setLayout] = useState("random");
   const handleChange = (value: string): void => {
     setLayout(value);
   };
@@ -55,14 +49,13 @@ const DirectedGraph = ({ address }: { address: string }) => {
   return (
     <Card className="mt-6">
       <Flex>
-        <Flex className="space-x-0.5" justifyContent="start">
+        <div className="w-full">
           <Title>Visualization</Title>
-          <Icon
-            icon={InformationCircleIcon}
-            variant="simple"
-            tooltip="Right click to view node/edge details.&#13;Left click node to view further transactions."
-          />
-        </Flex>
+          <Text>
+            Right click to view node/edge details. Left click node to view
+            further transactions.
+          </Text>
+        </div>
         <Flex justifyContent="end" className="gap-2">
           <LayoutSelector
             options={layouts}
@@ -71,50 +64,9 @@ const DirectedGraph = ({ address }: { address: string }) => {
           />
         </Flex>
       </Flex>
-      <Graph address={address} layout={layout} />
+      <G6Graph address={address} layout={layout} />
     </Card>
   );
-};
-
-const { ZoomCanvas, DragNode, ActivateRelations } = Behaviors;
-
-const Graph = ({ address, layout }: { address: string; layout?: Layout }) => {
-  const { data, loading, error } = useQuery(GetTransactionEdgeAggregate, {
-    variables: {
-      address,
-    },
-  });
-
-  if (loading) return <Text>Loading...</Text>;
-
-  if (error) return <Text>{error.message}</Text>;
-
-  return (
-    <Card className="rounded-none p-0 mt-6">
-      <Graphin
-        data={reduceData(data)}
-        layout={layout}
-        height={500}
-        className="rounded-xl"
-        autopaint={false}
-      >
-        <NodeEvent />
-        <ActivateRelations trigger="mouseenter" />
-      </Graphin>
-    </Card>
-  );
-};
-
-const GraphLoadingProgress = () => {
-  const [progress, setProgress] = useState(0);
-  setInterval(() => {
-    setProgress((prev) => {
-      if (prev < 100) return prev + 1;
-      return 0;
-    });
-  }, 1);
-
-  return <ProgressBar value={progress} />;
 };
 
 export default DirectedGraph;

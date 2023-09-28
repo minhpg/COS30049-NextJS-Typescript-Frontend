@@ -4,7 +4,6 @@ import { GraphinContext, IG6GraphEvent } from "@antv/graphin";
 import { useContext, useEffect } from "react";
 
 import { reduceData } from "./utils";
-import { truncateAddress } from "@/utils";
 
 import { apolloClient } from "@/apollo/client-provider";
 import GetTransactionEdgeAggregate from "@/graphql/dashboard/addresses/transactions/GetTransactionEdgeAggregate.gql";
@@ -45,28 +44,8 @@ export const NodeEvent = () => {
     }
   };
 
-  const handleMouseEnter = (evt: IG6GraphEvent) => {
-    const node = evt.item as INode;
-    const model = node.getModel() as NodeConfig;
-    graph.setItemState(node, "hover", true);
-    graph.updateItem(node, {
-      label: model.id,
-    });
-  };
-
-  const handleMouseLeave = (evt: IG6GraphEvent) => {
-    const node = evt.item as INode;
-    const model = node.getModel() as NodeConfig;
-    graph.setItemState(node, "hover", false);
-    graph.updateItem(node, {
-      label: truncateAddress(model.id),
-    });
-  };
-
   useEffect(() => {
     graph.on("node:click", handleClick);
-    graph.on("node:mouseenter", handleMouseEnter);
-    graph.on("node:mouseLeave", handleMouseLeave);
   }, [graph]);
   return null;
 };

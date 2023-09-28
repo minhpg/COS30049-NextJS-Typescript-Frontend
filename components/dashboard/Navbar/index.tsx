@@ -44,7 +44,7 @@ const Navbar = () => {
               className="text-slate-500 relative hidden lg:flex justify-center text-base font-medium space-x-8"
             >
               {navbarItems.map((item) => (
-                <Link href={item.path}>
+                <Link href={item.path} key={item.path}>
                   <span className="hover:text-slate-700 transition-all">
                     {item.title}
                   </span>

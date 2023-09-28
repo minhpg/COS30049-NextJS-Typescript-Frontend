@@ -1,7 +1,9 @@
-export enum AddressType {
-  eoa,
-  contract,
-}
+export type AddressType = "eoa" | "contract";
+
+export const AddressTypeFull = {
+  eoa: "Externally Owned Account",
+  contract: "Contract",
+};
 
 export interface Address {
   address: string;

@@ -137,8 +137,8 @@ const DataTable = ({
         data: {
           transactions: Transactions;
           transactionsAggregate: {
-            count: number
-          }
+            count: number;
+          };
         };
       } = await apolloClient.query({
         query,
@@ -157,29 +157,33 @@ const DataTable = ({
     }
   );
 
-  const flatData = useMemo(
-    () =>
-      data?.pages?.flatMap(
-        ({ transactions }: { transactions: Transactions }) => {
-          return transactions.map(
-            ({ hash, block_timestamp, from_address, to_address, value }) => {
-              return {
-                hash,
-                block_timestamp,
-                between: {
-                  from_address,
-                  to_address,
-                },
-                value,
-              };
-            }
-          );
-        }
-      ) ?? [],
-    [data]
-  );
+  const flatData = useMemo(() => {
+    try {
+      return (
+        data?.pages?.flatMap(
+          ({ transactions }: { transactions: Transactions }) => {
+            return transactions.map(
+              ({ hash, block_timestamp, from_address, to_address, value }) => {
+                return {
+                  hash,
+                  block_timestamp,
+                  between: {
+                    from_address,
+                    to_address,
+                  },
+                  value,
+                };
+              }
+            );
+          }
+        ) ?? []
+      );
+    } catch {
+      return [];
+    }
+  }, [data]);
 
-  const totalRowCount = data?.pages?.[0].transactionsAggregate?.count ?? 0;
+  const totalRowCount = data?.pages?.[0]?.transactionsAggregate?.count ?? 0;
 
   const totalFetched = flatData?.length;
 

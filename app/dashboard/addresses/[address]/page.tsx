@@ -8,6 +8,7 @@ import {
   Title,
   Text,
 } from "@tremor/react";
+
 import SoldVolumeCard from "@/components/dashboard/address/Cards/SoldVolumeCard";
 import BoughtVolumeCard from "@/components/dashboard/address/Cards/BoughtVolumeCard";
 import LatestTransactionsCard from "@/components/dashboard/address/Cards/LatestTransactionsCard";
@@ -17,9 +18,10 @@ import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
 import DirectedGraph from "@/components/dashboard/address/Graphs/DirectedGraph";
 
 import { getClient } from "@/apollo/server-provider";
-import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql"
-import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql"
-import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql"
+import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql";
+import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql";
+import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql";
+import { Address, AddressType, AddressTypeFull, Addresses } from "@/types";
 
 const AddressPage = async ({
   params: { address },
@@ -29,7 +31,11 @@ const AddressPage = async ({
   const client = getClient();
   const {
     data: { addresses },
-  }: any = await client.query({
+  }: {
+    data: {
+      addresses: Addresses;
+    };
+  } = await client.query({
     query: GetAddress,
     variables: {
       address,
@@ -51,7 +57,8 @@ const AddressPage = async ({
     <>
       <Title>{address}</Title>
       <Text>
-        <span className="font-light">Type of address:</span> {type}
+        <span className="font-light">Type of address:</span>{" "}
+        {AddressTypeFull[type as keyof typeof AddressTypeFull]}
       </Text>
       <TabGroup className="mt-6">
         <TabList>

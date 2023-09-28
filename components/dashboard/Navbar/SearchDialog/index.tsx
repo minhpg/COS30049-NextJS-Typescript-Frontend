@@ -62,20 +62,20 @@ const SearchResults = () => {
 
   return (
     <List>
-      <ListItem>
+      <ListItem key="addresses-section">
         <span className="font-bold">Addresses</span>
       </ListItem>
       {addresses.map(({ address }) => (
-        <ListItem className="text-slate-500 hover:text-slate-700">
-          <Link href={`/dashboard/addresses/${address}`}>{address}</Link>
+        <ListItem className="text-slate-500 hover:text-slate-700" key={address}>
+          <Link href={`/dashboard/addresses/${address}`} key={address}>{address}</Link>
         </ListItem>
       ))}
       <ListItem>
-        <span className="font-bold">Transactions</span>
+        <span className="font-bold" key="transactions-section">Transactions</span>
       </ListItem>
       {transactions.map(({ hash }) => (
-        <ListItem className="text-slate-500 hover:text-slate-700">
-          <Link href={`/dashboard/transactions/${hash}`}>{hash}</Link>
+        <ListItem className="text-slate-500 hover:text-slate-700" key={hash}>
+          <Link href={`/dashboard/transactions/${hash}`} key={hash}>{hash}</Link>
         </ListItem>
       ))}
     </List>
