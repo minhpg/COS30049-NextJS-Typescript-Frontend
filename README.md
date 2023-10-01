@@ -1,5 +1,7 @@
 # COS30049 - Computing Technology Innovation Project - Blockchain Transaction Information Visualization System 
 
+[Vercel + AuraDB Demo](https://cos-30049-next-js-typescript-frontend.vercel.app/)
+
 ## Universal Requirements
 ### Database Design and Implementation
 Design and implement the necessary database structure that aligns with the project's requirements. This involves creating tables, defining relationships, and ensuring efficient data storage and retrieval.
