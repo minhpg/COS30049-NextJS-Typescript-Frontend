@@ -26,7 +26,12 @@ const G6Graph = () => {
 
 	return (
 		<Grid numItemsLg={6} numItemsMd={4} numItemsSm={4} className="gap-4">
-			<Col numColSpan={4} numColSpanLg={2} numColSpanMd={4} numColSpanSm={4}>
+			<Col
+				numColSpan={4}
+				numColSpanLg={2}
+				numColSpanMd={4}
+				numColSpanSm={4}
+			>
 				<Card className="p-5 break-all mt-6 lg:h-[500px] w-full">
 					<div>
 						<InfoMenus />
@@ -39,7 +44,10 @@ const G6Graph = () => {
 			</Col>
 			<Col numColSpan={4} numColSpanLg={4}>
 				<Card className="rounded-none p-0 lg:mt-6">
-					<div ref={context.graphRef.setRef} className="h-full w-full"></div>
+					<div
+						ref={context.graphRef.setRef}
+						className="h-full w-full"
+					></div>
 				</Card>
 			</Col>
 		</Grid>
@@ -52,7 +60,9 @@ const GraphInternal = () => {
 			<Flex className="space-x-6">
 				<div className="w-full">
 					<Title>Visualization</Title>
-					<Text>Click a node or edge to see more available actions!</Text>
+					<Text>
+						Click a node or edge to see more available actions!
+					</Text>
 				</div>
 				<LayoutSelector />
 				<SearchBox />

@@ -28,7 +28,9 @@ export const reduceData = (data: {
 		"address"
 	);
 
-	const mapTransactionToEdge = (data: TransactionEdgeAggregate): IUserEdge => {
+	const mapTransactionToEdge = (
+		data: TransactionEdgeAggregate
+	): IUserEdge => {
 		const {
 			to_address: { address: to_address },
 			from_address: { address: from_address },

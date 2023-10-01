@@ -8,6 +8,6 @@ import { httpLink } from "./config";
 export const { getClient } = registerApolloClient(() => {
 	return new NextSSRApolloClient({
 		cache: new NextSSRInMemoryCache(),
-		link: httpLink
+		link: httpLink,
 	});
 });

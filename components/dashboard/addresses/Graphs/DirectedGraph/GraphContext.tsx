@@ -41,13 +41,17 @@ interface GraphContextProps {
 		showEdgeMenu: boolean;
 		setShowEdgeMenu: React.Dispatch<React.SetStateAction<boolean>>;
 		selectedEdge: EdgeConfig | null;
-		setSelectedEdge: React.Dispatch<React.SetStateAction<EdgeConfig | null>>;
+		setSelectedEdge: React.Dispatch<
+			React.SetStateAction<EdgeConfig | null>
+		>;
 	};
 	nodeMenu: {
 		showNodeMenu: boolean;
 		setShowNodeMenu: React.Dispatch<React.SetStateAction<boolean>>;
 		selectedNode?: NodeConfig | null;
-		setSelectedNode: React.Dispatch<React.SetStateAction<NodeConfig | null>>;
+		setSelectedNode: React.Dispatch<
+			React.SetStateAction<NodeConfig | null>
+		>;
 	};
 	layout: {
 		layout: LayoutConfig;

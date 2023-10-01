@@ -59,8 +59,8 @@ export default function Hero() {
 								data-aos="zoom-y-out"
 								data-aos-delay="150"
 							>
-								Explore Ethereum Blockchain Transactions and Patterns to
-								understand more about the Network
+								Explore Ethereum Blockchain Transactions and
+								Patterns to understand more about the Network
 							</p>
 							<div
 								className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"

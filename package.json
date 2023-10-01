@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx}\""
+    "docker:build": "docker-compose --env-file app.env build",
+    "docker:up": "docker-compose --env-file app.env up",
+    "pretty": "npx prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx}\""
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -73,6 +75,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
-    "graphql-markdown": "^7.0.0"
+    "graphql-markdown": "^7.0.0",
+    "prettier": "^3.0.3"
   }
 }

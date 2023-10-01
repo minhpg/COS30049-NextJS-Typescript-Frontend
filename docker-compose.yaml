@@ -3,15 +3,12 @@ name: cos30049-eth-visualization
 services:
   neo4j:
     image: neo4j:latest
+    env_file:
+      - neo4j.env
     ports:
-      - 7474:7474 # HTTP
-      - 7473:7473 # HTTPS
-      - 7687:7687 # Bolt
-    environment:
-      - NEO4J_AUTH=neo4j/eth12345
-      - NEO4J_PLUGINS=["apoc"]
+      - 7687:7687
     volumes:
-      - ./neo4j/tmp/data:/data
+      - .tmp/neo4j/tmp/data:/data
 
   nextjs:
     depends_on:
@@ -22,18 +19,15 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    environment:
-      - NEO4J_URI=bolt://neo4j:7687
-      - NEO4J_USERNAME=neo4j
-      - NEO4J_PASSWORD=eth12345
-      - NEO4J_DB=neo4j
-      - NEXT_PUBLIC_API_URL=http://localhost:3000
-      - NEXT_TELEMETRY_DISABLED=1
-      - PORT=3000
+      args:
+        - NEO4J_URI=${NEO4J_URI}
+        - NEO4J_USERNAME=${NEO4J_USERNAME}
+        - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+        - NEO4J_DB=${NEO4J_USERNAME}
     env_file:
-      - .env.local
+      - app.env
     volumes:
-      - ./nextjs:/app
+      - .tmp/nextjs:/app
 
   seed:
     depends_on:
@@ -41,9 +35,6 @@ services:
     build:
       context: ./setup
       dockerfile: Dockerfile
-    environment:
-      - NEO4J_URI=bolt://neo4j:7687
-      - NEO4J_USERNAME=neo4j
-      - NEO4J_PASSWORD=eth12345
-      - NEO4J_DB=neo4j
+    env_file:
+      - app.env
 

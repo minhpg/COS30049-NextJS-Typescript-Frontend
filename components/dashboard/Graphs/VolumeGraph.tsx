@@ -18,7 +18,11 @@ import { VolumeStat } from "@/types";
 const VolumeGraph = () => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
-	const categoriesList = ["Transaction Count", "Total Value", "Average Value"];
+	const categoriesList = [
+		"Transaction Count",
+		"Total Value",
+		"Average Value",
+	];
 	const dataKeys = ["transactionsCount", "totalValue", "averageValue"];
 
 	const selectedCategory = dataKeys[selectedIndex];
@@ -51,7 +55,10 @@ const VolumeGraph = () => {
 					<Text> Shows monthly transaction volume</Text>
 				</div>
 				<div className="mt-6 md:mt-0 overflow-x-scroll no-scrollbar">
-					<TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
+					<TabGroup
+						index={selectedIndex}
+						onIndexChange={setSelectedIndex}
+					>
 						<TabList color="gray" variant="solid">
 							{categoriesList.map((category) => (
 								<Tab key={category}>{category}</Tab>

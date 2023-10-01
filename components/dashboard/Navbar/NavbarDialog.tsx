@@ -13,7 +13,10 @@ export interface INavbarDialogProps {
 const NavbarDialog = ({ isOpen, setIsOpen }: INavbarDialogProps) => {
 	return (
 		<Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-			<div className="fixed inset-0 bg-black/30 z-40" aria-hidden="true" />
+			<div
+				className="fixed inset-0 bg-black/30 z-40"
+				aria-hidden="true"
+			/>
 			<div className="fixed inset-x-0 top-0 z-50 m-1 opacity-100 scale-100">
 				<Dialog.Panel className="m-2">
 					<Card className="p-0">

@@ -32,7 +32,13 @@ const TopAddressesGraph = () => {
 							label="Bought Addresses"
 							index="address"
 							category="count"
-							colors={["violet", "indigo", "rose", "cyan", "amber"]}
+							colors={[
+								"violet",
+								"indigo",
+								"rose",
+								"cyan",
+								"amber",
+							]}
 						/>
 					</Card>
 				</Col>

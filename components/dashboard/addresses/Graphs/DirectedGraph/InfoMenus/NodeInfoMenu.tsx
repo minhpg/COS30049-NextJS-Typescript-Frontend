@@ -57,7 +57,9 @@ const NodeInfoMenu = ({ data }: INodeInfoMenuProps) => {
 
 			<Text className="text-xs mt-3">
 				<span className="font-light">Type:</span>{" "}
-				<span>{AddressTypeFull[type as keyof typeof AddressTypeFull]}</span>
+				<span>
+					{AddressTypeFull[type as keyof typeof AddressTypeFull]}
+				</span>
 			</Text>
 			<div className="mt-3">
 				<Text className="text-xs">Bought</Text>

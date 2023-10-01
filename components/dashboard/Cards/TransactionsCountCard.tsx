@@ -22,7 +22,8 @@ const TransactionsCountCard = ({
 
 	const tps =
 		transactionsCount /
-		(dateTimeToEpoch(transactionTimeMax) - dateTimeToEpoch(transactionTimeMin));
+		(dateTimeToEpoch(transactionTimeMax) -
+			dateTimeToEpoch(transactionTimeMin));
 	return (
 		<Card className="mx-auto">
 			<Flex alignItems="start">

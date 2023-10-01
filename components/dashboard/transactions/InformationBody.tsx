@@ -27,10 +27,8 @@ const tooltipInfo = {
 	gas_price: "Cost per unit of gas spent for the transaction.",
 	gas_usage:
 		"Maximum amount of gas allocated for the transaction & the amount eventually used. Normal ETH transfers involve 21,000 gas units while contracts involve higher values.",
-	hash:
-		"A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
-	input:
-		"Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.",
+	hash: "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
+	input: "Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.",
 	transaction_fee:
 		"Amount paid to process the transaction in Ether and fiat value.",
 	transaction_index: "",
@@ -310,7 +308,8 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 								className="h-full"
 							>
 								<Text>
-									{numberWithCommas(gas_used)} | {numberWithCommas(gas)} (
+									{numberWithCommas(gas_used)} |{" "}
+									{numberWithCommas(gas)} (
 									{(gas_used / gas) * 100}%)
 								</Text>
 							</Flex>

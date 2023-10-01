@@ -162,7 +162,13 @@ const DataTable = ({
 			data?.pages?.flatMap(
 				({ transactions }: { transactions: Transactions }) => {
 					return transactions.map(
-						({ hash, block_timestamp, from_address, to_address, value }) => {
+						({
+							hash,
+							block_timestamp,
+							from_address,
+							to_address,
+							value,
+						}) => {
 							return {
 								hash,
 								block_timestamp,
@@ -209,7 +215,8 @@ const DataTable = ({
 	});
 
 	const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
-	const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+	const paddingTop =
+		virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
 	const paddingBottom =
 		virtualRows.length > 0
 			? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
@@ -223,7 +230,10 @@ const DataTable = ({
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
-									<TableHeaderCell key={header.id} className="sticky">
+									<TableHeaderCell
+										key={header.id}
+										className="sticky"
+									>
 										{flexRender(
 											header.column.columnDef.header,
 											header.getContext()
@@ -237,7 +247,9 @@ const DataTable = ({
 				<TableBody>
 					{paddingTop > 0 && (
 						<TableRow>
-							<TableCell style={{ height: `${paddingTop}px` }}></TableCell>
+							<TableCell
+								style={{ height: `${paddingTop}px` }}
+							></TableCell>
 						</TableRow>
 					)}
 					{virtualRows.map((virtualRow) => {
@@ -259,7 +271,9 @@ const DataTable = ({
 					})}
 					{paddingBottom > 0 && (
 						<TableRow>
-							<TableCell style={{ height: `${paddingBottom}px` }}></TableCell>
+							<TableCell
+								style={{ height: `${paddingBottom}px` }}
+							></TableCell>
 						</TableRow>
 					)}
 

@@ -16,7 +16,9 @@ const ETHPriceCard = async () => {
 				<Flex alignItems="start">
 					<div>
 						<Text>ETH Price</Text>
-						<Metric>${numberWithCommas(parseFloat(rates.USD))}</Metric>
+						<Metric>
+							${numberWithCommas(parseFloat(rates.USD))}
+						</Metric>
 					</div>
 				</Flex>
 				<Grid className="mt-4">

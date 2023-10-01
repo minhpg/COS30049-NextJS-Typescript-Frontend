@@ -58,7 +58,8 @@ const SearchResults = () => {
 	if (!data) return null;
 
 	const { transactions, addresses } = data;
-	if ((transactions.length == 0 && addresses.length == 0) || !data) return null;
+	if ((transactions.length == 0 && addresses.length == 0) || !data)
+		return null;
 
 	return (
 		<List>
@@ -66,8 +67,14 @@ const SearchResults = () => {
 				<span className="font-bold">Addresses</span>
 			</ListItem>
 			{addresses.map(({ address }) => (
-				<ListItem className="text-slate-500 hover:text-slate-700" key={address}>
-					<Link href={`/dashboard/addresses/${address}`} key={address}>
+				<ListItem
+					className="text-slate-500 hover:text-slate-700"
+					key={address}
+				>
+					<Link
+						href={`/dashboard/addresses/${address}`}
+						key={address}
+					>
 						{address}
 					</Link>
 				</ListItem>
@@ -78,7 +85,10 @@ const SearchResults = () => {
 				</span>
 			</ListItem>
 			{transactions.map(({ hash }) => (
-				<ListItem className="text-slate-500 hover:text-slate-700" key={hash}>
+				<ListItem
+					className="text-slate-500 hover:text-slate-700"
+					key={hash}
+				>
 					<Link href={`/dashboard/transactions/${hash}`} key={hash}>
 						{hash}
 					</Link>

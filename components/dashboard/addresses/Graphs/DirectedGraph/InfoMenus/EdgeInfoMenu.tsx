@@ -20,7 +20,9 @@ const EdgeInfoMenu = ({ model }: IEdgeInfoMenuProps) => {
 			<Text className="text-sm font-semibold">Transactions Summary</Text>
 			<div className="mt-3">
 				<Text className="font-light text-xs">From: </Text>
-				<Link href={`/dashboard/addresses/${data.from_address.address}`}>
+				<Link
+					href={`/dashboard/addresses/${data.from_address.address}`}
+				>
 					<Text className="text-xs text-tremor-brand hover:underline">
 						{data.from_address.address}
 					</Text>
