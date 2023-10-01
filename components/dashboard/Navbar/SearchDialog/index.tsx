@@ -20,7 +20,7 @@ const SearchDialogInternal = ({
 	const { setQuery } = useContext(SearchContext);
 	return (
 		<Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-			<div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+			<div className="fixed inset-0 bg-black/30 z-40" aria-hidden="true" />
 			<div className="fixed inset-x-0 top-0 z-50 m-1 opacity-100 scale-10">
 				<Dialog.Panel className="m-2 md:mx-auto md:w-3/4 lg:w-1/2 md:mt-6">
 					<TextInput
