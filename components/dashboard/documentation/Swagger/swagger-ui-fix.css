@@ -1,11 +1,11 @@
 .swagger-ui .wrapper {
-    @apply p-0 !important
-} 
+  @apply p-0 !important;
+}
 
 .swagger-ui .info {
-    @apply hidden !important
+  @apply hidden !important;
 }
 
 .swagger-ui {
-    @apply font-sans !important
+  @apply font-sans !important;
 }

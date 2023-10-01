@@ -5,7 +5,7 @@ from neo4j import GraphDatabase, RoutingControl
 import pandas
 
 # Getting Neo4J authentication from environment file
-load_dotenv(dotenv_path=Path('../.env.local'))
+# load_dotenv(dotenv_path=Path('../.env.local'))
 
 NEO4J_URI = os.getenv('NEO4J_URI')
 NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
@@ -28,6 +28,7 @@ class Setup:
                  'CREATE CONSTRAINT IF NOT EXISTS FOR (t:Transaction) REQUIRE t.hash IS UNIQUE']
         for query in queries:
             self.driver.execute_query(query, database_=NEO4J_DB)
+        print("Initialized Neo4J")
 
     def createRelationships(self):
         # Create transactions
@@ -57,6 +58,8 @@ class Setup:
                 self.driver.execute_query(query, database_=NEO4J_DB)
             except Exception as e:
                 print(e)
+        print("Created Relationships from "+RELS_DATA)
+
 
     def createNodes(self): 
         #  Create addresses
@@ -66,6 +69,8 @@ class Setup:
             query.append(f'MERGE (:Address{{address: "{row.get("addressId")}", type:"{row.get("type")}"}})')
         query = list(dict.fromkeys(query))
         self.driver.execute_query( '\n'.join(query), database_=NEO4J_DB)
+        print("Created Nodes from "+NODES_DATA)
+
 
     def run(self):
         self.initDatabase()

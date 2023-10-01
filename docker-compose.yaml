@@ -1,0 +1,49 @@
+version: "3.8"
+name: cos30049-eth-visualization
+services:
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - 7474:7474 # HTTP
+      - 7473:7473 # HTTPS
+      - 7687:7687 # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/eth12345
+      - NEO4J_PLUGINS=["apoc"]
+    volumes:
+      - ./neo4j/tmp/data:/data
+
+  nextjs:
+    depends_on:
+      - neo4j
+    ports:
+      - 3000:3000 # Next.js application
+      - 9229:9229 # Node.js debug port
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=eth12345
+      - NEO4J_DB=neo4j
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+      - NEXT_TELEMETRY_DISABLED=1
+      - PORT=3000
+    env_file:
+      - .env.local
+    volumes:
+      - ./nextjs:/app
+
+  seed:
+    depends_on:
+      - neo4j
+    build:
+      context: ./setup
+      dockerfile: Dockerfile
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=eth12345
+      - NEO4J_DB=neo4j
+

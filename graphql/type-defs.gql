@@ -75,7 +75,7 @@ type Query {
     @cypher(
       statement: """
       MATCH (a:Address)-[:BUY]-(t:Transaction)
-      WITH a.address as address, 
+      WITH a.address as address,
       a.type as type,
       count(t) AS bought
       RETURN {
@@ -94,7 +94,7 @@ type Query {
     @cypher(
       statement: """
       MATCH (a:Address)-[:SELL]-(t:Transaction)
-      WITH a.address as address, 
+      WITH a.address as address,
       a.type as type,
       count(t) AS sold
       RETURN {

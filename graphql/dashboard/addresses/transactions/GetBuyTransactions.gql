@@ -18,4 +18,3 @@ query GetBuyTransactions($address: String, $offset: Int, $limit: Int) {
     count
   }
 }
-

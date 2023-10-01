@@ -5,11 +5,11 @@ import "./swagger-ui-fix.css";
 import { Card } from "@tremor/react";
 
 const Swagger = () => {
-  return (
-    <Card className="mt-6">
-      <SwaggerUI url="http://localhost:8000/docs-json" />
-    </Card>
-  );
+	return (
+		<Card className="mt-6">
+			<SwaggerUI url="http://localhost:8000/docs-json" />
+		</Card>
+	);
 };
 
 export default Swagger;

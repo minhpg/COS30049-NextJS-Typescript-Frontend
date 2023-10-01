@@ -1,4 +1,3 @@
-
 query GetBoughtStat($address: String) {
   addresses(where: { address: $address }) {
     boughtAggregate {

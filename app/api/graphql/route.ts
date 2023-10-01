@@ -1,15 +1,16 @@
+// @ts-nocheck
+export const dynamic = "force-dynamic";
+
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { neoSchema } from "@/apollo/schema";
+import { getNeoSchema } from "@/apollo/schema";
 
 const server = async () => {
-  const schema = await neoSchema.getSchema();
-  return new ApolloServer({ schema });
+	const neoSchema = getNeoSchema();
+	const schema = await neoSchema.getSchema();
+	return new ApolloServer({ schema });
 };
 
 const handler = startServerAndCreateNextHandler(await server());
 
-export { 
-  handler as GET, 
-  handler as POST 
-};
+export { handler as GET, handler as POST };

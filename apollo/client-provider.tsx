@@ -3,19 +3,12 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { httpLink } from "./config";
 
-
 export const apolloClient = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-  connectToDevTools: true,
-  defaultOptions: {
-    query: { 
-      errorPolicy: "all", 
-      fetchPolicy: "network-only"
-     },
-  },
+	link: httpLink,
+	cache: new InMemoryCache(),
+	connectToDevTools: true,
 });
 
 export const ApolloClientProvider = ({ children }: React.PropsWithChildren) => {
-  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+	return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 };

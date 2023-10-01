@@ -6,12 +6,12 @@ query GetTopAddresses {
     count
   }
 
-#   getTopSellAddresses {
-#     address {
-#       address
-#     }
-#     count
-#   }
+  #   getTopSellAddresses {
+  #     address {
+  #       address
+  #     }
+  #     count
+  #   }
 
   transactionAddressTypeAggregate {
     type

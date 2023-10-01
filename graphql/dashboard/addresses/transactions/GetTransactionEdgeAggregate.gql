@@ -2,9 +2,11 @@ query GetTransactionEdgeAggregate($address: String) {
   transactionEdgeAggregate(address: $address) {
     to_address {
       address
+      type
     }
     from_address {
       address
+      type
     }
     count
     value {

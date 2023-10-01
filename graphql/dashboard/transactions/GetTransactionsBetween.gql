@@ -1,12 +1,13 @@
-query GetTransactionsBetween($from_address: String, $to_address: String, $offset: Int, $limit: Int) {
+query GetTransactionsBetween(
+  $from_address: String
+  $to_address: String
+  $offset: Int
+  $limit: Int
+) {
   transactions(
     where: {
-      from_address: {
-        address: $from_address
-      },
-      to_address: {
-        address: $to_address
-      }
+      from_address: { address: $from_address }
+      to_address: { address: $to_address }
     }
     options: { offset: $offset, limit: $limit, sort: { block_timestamp: DESC } }
   ) {
@@ -21,14 +22,12 @@ query GetTransactionsBetween($from_address: String, $to_address: String, $offset
     transaction_fee
     value
   }
-  transactionsAggregate( where: {
-      from_address: {
-        address: $from_address
-      },
-      to_address: {
-        address: $to_address
-      }
-    }) {
+  transactionsAggregate(
+    where: {
+      from_address: { address: $from_address }
+      to_address: { address: $to_address }
+    }
+  ) {
     count
   }
 }

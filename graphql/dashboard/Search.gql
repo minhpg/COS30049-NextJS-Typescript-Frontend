@@ -1,14 +1,8 @@
 query Search($query: String) {
-    addresses(
-    where: { address_STARTS_WITH: $query },
-    options: { limit: 5 }
-  ) {
+  addresses(where: { address_STARTS_WITH: $query }, options: { limit: 5 }) {
     address
   }
-  transactions(
-    where: { hash_STARTS_WITH: $query },
-    options: { limit: 5 }
-  ) {
+  transactions(where: { hash_STARTS_WITH: $query }, options: { limit: 5 }) {
     hash
   }
 }
