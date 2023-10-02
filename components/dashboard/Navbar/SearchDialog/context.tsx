@@ -1,8 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 
-import Search from "@/graphql/dashboard/Search.gql";
 import { Addresses, Transactions } from "@/types";
+import Search from "@/graphql/dashboard/Search.gql";
 
 export interface SearchDataResponse {
 	addresses: Addresses;
@@ -14,26 +14,31 @@ const initData: SearchDataResponse = {
 	transactions: [],
 };
 
-export const SearchContext = createContext({
+/** Seach Dialog context */
+export const SearchDialogContext = createContext({
 	query: "",
 	setQuery: (query: string) => {},
 	data: initData,
 	loading: false,
 });
 
-export const SearchContextProvider = ({
+/** Search Dialog context provider */
+export const SearchDialogContextProvider = ({
 	children,
 }: {
 	children: ReactNode;
 }) => {
+	// Stores queries
 	const [query, setQuery] = useState("");
 	const [finalQuery, setFinalQuery] = useState("");
 
+	/** Delay fetching after user input to reduce fetching */
 	useEffect(() => {
 		const timeout = setTimeout(() => setFinalQuery(query), 300);
 		return () => clearTimeout(timeout);
 	}, [query]);
 
+	/** Run fetch query when `finalQuery` changes */
 	const { data, loading } = useQuery(Search, {
 		variables: {
 			query: finalQuery,
@@ -41,7 +46,7 @@ export const SearchContextProvider = ({
 	});
 
 	return (
-		<SearchContext.Provider
+		<SearchDialogContext.Provider
 			value={{
 				query,
 				setQuery,
@@ -50,6 +55,6 @@ export const SearchContextProvider = ({
 			}}
 		>
 			{children}
-		</SearchContext.Provider>
+		</SearchDialogContext.Provider>
 	);
 };

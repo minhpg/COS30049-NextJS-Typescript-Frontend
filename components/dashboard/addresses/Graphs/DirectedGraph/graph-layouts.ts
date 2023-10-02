@@ -1,3 +1,19 @@
+import { LayoutConfig } from "@antv/g6";
+
+/** Specify available graph layouts */
+export const layouts: LayoutConfig[] = [
+	{
+		type: "dagre",
+		rankdir: "LR",
+		nodesep: 30,
+		ranksep: 100,
+	},
+	{
+		type: "circular",
+		center: [200, 200],
+	},
+];
+
 // export const layouts = [
 //   { type: "graphin-force" },
 //   {
@@ -79,9 +95,6 @@
 //     maxLevelDiff: 0.5,
 //     sortBy: "degree",
 //     // center: [200, 200], // 可选，
-
-import { LayoutConfig } from "@antv/g6";
-
 //     // linkDistance: 50, // 可选，边长
 //     // preventOverlap: true, // 可选，必须配合 nodeSize
 //     // nodeSize: 30, // 可选
@@ -132,16 +145,3 @@ import { LayoutConfig } from "@antv/g6";
 //     // },
 //   },
 // ];
-
-export const layouts: LayoutConfig[] = [
-	{
-		type: "dagre",
-		rankdir: "LR",
-		nodesep: 30,
-		ranksep: 100,
-	},
-	{
-		type: "circular",
-		center: [200, 200], // The center of the graph by default
-	},
-];

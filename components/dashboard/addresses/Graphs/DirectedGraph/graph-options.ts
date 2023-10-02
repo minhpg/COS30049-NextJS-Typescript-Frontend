@@ -1,5 +1,6 @@
 import { GraphOptions } from "@antv/g6";
 
+/** Specify graph options for initialization */
 export const graphOptions: Partial<GraphOptions> = {
 	height: 500,
 	renderer: "svg",

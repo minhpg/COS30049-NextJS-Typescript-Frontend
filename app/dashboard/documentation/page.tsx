@@ -1,3 +1,4 @@
+/** Force static pre-rendering */
 export const dynamic = "force-static";
 import {
 	Text,
@@ -9,8 +10,10 @@ import {
 	Tab,
 } from "@tremor/react";
 import { readFile } from "fs/promises";
-// import GraphQLExplorer from "@/components/dashboard/documentation/GraphQLExplorer";
 import GithubMarkdown from "@/components/dashboard/documentation/GithubMarkdown";
+// import GraphQLExplorer from "@/components/dashboard/documentation/GraphQLExplorer";
+
+/** Documentation page */
 const Documentation = async () => {
 	return (
 		<>
@@ -25,16 +28,12 @@ const Documentation = async () => {
 				<TabPanels>
 					<TabPanel className="mt-0">
 						<GithubMarkdown
-							markdownData={(
-								await readFile("./README.md")
-							).toString()}
+							markdownData={(await readFile("./README.md")).toString()}
 						/>
 					</TabPanel>
 					<TabPanel className="mt-0">
 						<GithubMarkdown
-							markdownData={(
-								await readFile("./docs/schema.md")
-							).toString()}
+							markdownData={(await readFile("./docs/schema.md")).toString()}
 						/>
 					</TabPanel>
 					{/* <TabPanel className="mt-0 h-[800px]">

@@ -8,12 +8,12 @@ const config: Config = {
 		"./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
 	],
 	darkMode: "class",
+	/** `tremor` theme */
 	theme: {
 		transparent: "transparent",
 		current: "currentColor",
 		extend: {
 			colors: {
-				// light mode
 				tremor: {
 					brand: {
 						faint: "#eff6ff", // blue-50

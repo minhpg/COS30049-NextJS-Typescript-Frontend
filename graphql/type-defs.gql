@@ -1,30 +1,101 @@
+""""
+Address Types for Addresses. Either eoa (Externally Owned Account) or contracts
+"""
 enum AddressType {
   eoa
   contract
 }
 
+"""
+Represents an Ethereum Address
+"""
 type Address {
+  """
+  An Ethereum address is a 42-character hexadecimal address
+  """
   address: String!
+  
+  """
+  Type of Ethereum address
+  """
   type: AddressType
 
+  """
+  Transactions where the address is the receiving party
+  """
   bought: [Transaction!]! @relationship(type: "BUY", direction: OUT)
+  
+  """
+  Transactions where the address is the sending party
+  """
   sold: [Transaction!]! @relationship(type: "SELL", direction: OUT)
 }
 
+"""
+Represents an Ethereum Transaction
+"""
 type Transaction {
+  """
+  Transaction block hash
+  """
   block_hash: String!
+
+  """
+  Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced
+  """
   block_number: Int!
+
+  """
+  The date and time at which a transaction is produced
+  """
   block_timestamp: DateTime!
+
+  """
+  Maximum amount of gas allocated for the transaction. Normal ETH transfers involve 21,000 gas units while contracts involve higher values
+  """
   gas: Float!
+
+  """
+  Cost per unit of gas spent for the transaction
+  """
   gas_price: Float!
+
+  """
+  Amount of gas used by the transaction
+  """
   gas_used: Float!
+  
+  """
+  A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed
+  """
   hash: String!
+
+  """
+  Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient
+  """
   input: String!
+
+  """
+  Amount paid to process the transaction in Wei
+  """
   transaction_fee: Float!
+
+
   transaction_index: Int!
+
+  """
+  Value of Ethereum of the transaction
+  """
   value: Float!
 
+  """
+  Sending party of the transaction
+  """
   from_address: Address! @relationship(type: "SELL", direction: IN)
+
+  """
+  Receiving party of the transaction
+  """
   to_address: Address! @relationship(type: "BUY", direction: IN)
 }
 

@@ -15,14 +15,11 @@ import { useQuery } from "@apollo/client";
 import GetMonthlyVolume from "@/graphql/dashboard/GetMonthlyVolume.gql";
 import { VolumeStat } from "@/types";
 
+/** Plotting transaction volume statistics (`count, sum, average`)*/
 const VolumeGraph = () => {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
-	const categoriesList = [
-		"Transaction Count",
-		"Total Value",
-		"Average Value",
-	];
+	const categoriesList = ["Transaction Count", "Total Value", "Average Value"];
 	const dataKeys = ["transactionsCount", "totalValue", "averageValue"];
 
 	const selectedCategory = dataKeys[selectedIndex];
@@ -36,11 +33,15 @@ const VolumeGraph = () => {
 			</Card>
 		);
 
-	const dataParsed = data.getMonthlyVolume.map(
+	/** Data formatting*/
+	const graphData = data.getMonthlyVolume.map(
 		({ year, month, value: { sum, average }, count }: VolumeStat) => {
 			return {
+				/** Display year and month */
 				month: `${month}/${year}`,
+				/** Converting Wei to ETH */
 				totalValue: sum / 10 ** 18,
+				/** Converting Wei to ETH */
 				averageValue: average / 10 ** 18,
 				transactionsCount: count,
 			};
@@ -55,10 +56,7 @@ const VolumeGraph = () => {
 					<Text> Shows monthly transaction volume</Text>
 				</div>
 				<div className="mt-6 md:mt-0 overflow-x-scroll no-scrollbar">
-					<TabGroup
-						index={selectedIndex}
-						onIndexChange={setSelectedIndex}
-					>
+					<TabGroup index={selectedIndex} onIndexChange={setSelectedIndex}>
 						<TabList color="gray" variant="solid">
 							{categoriesList.map((category) => (
 								<Tab key={category}>{category}</Tab>
@@ -69,7 +67,7 @@ const VolumeGraph = () => {
 			</div>
 			<AreaChart
 				className="h-96 mt-6 md:mt-0"
-				data={dataParsed}
+				data={graphData}
 				index="month"
 				categories={[selectedCategory]}
 				colors={["indigo"]}

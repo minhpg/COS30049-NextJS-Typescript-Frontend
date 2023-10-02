@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
 	Tab,
 	TabList,
@@ -9,8 +10,15 @@ import {
 } from "@tremor/react";
 
 import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
+
 import GetTransactionsBetween from "@/graphql/dashboard/transactions/GetTransactionsBetween.gql";
 
+export const metadata: Metadata = {
+	title: "Transactions",
+	description: "Transactions",
+};
+
+/** Display transactions between two addresses */
 const TransactionsBetween = async ({
 	params: { from_address, to_address },
 }: {

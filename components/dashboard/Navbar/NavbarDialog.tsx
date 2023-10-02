@@ -1,22 +1,20 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dialog } from "@headlessui/react";
 import { Button, Card, Flex } from "@tremor/react";
-import { navbarItems } from "./navbar-items";
-import { NavbarLogo } from "@/components/Logo";
 import Link from "next/link";
+
+import { NavbarLogo } from "@/components/Logo";
+import { navbarItems } from "./navbar-items";
 
 export interface INavbarDialogProps {
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
-
+/** Responsive Navbar Dialog component */
 const NavbarDialog = ({ isOpen, setIsOpen }: INavbarDialogProps) => {
 	return (
 		<Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-			<div
-				className="fixed inset-0 bg-black/30 z-40"
-				aria-hidden="true"
-			/>
+			<div className="fixed inset-0 bg-black/30 z-40" aria-hidden="true" />
 			<div className="fixed inset-x-0 top-0 z-50 m-1 opacity-100 scale-100">
 				<Dialog.Panel className="m-2">
 					<Card className="p-0">

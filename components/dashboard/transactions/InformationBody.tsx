@@ -1,44 +1,25 @@
 "use client";
 
 import {
-	Grid,
 	Icon,
 	Text,
 	Card,
-	Col,
 	Flex,
-	Divider,
 	Table,
 	TableBody,
 	TableRow,
 	TableCell,
 } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
-import { WeiToETH, dateTimetoDate, numberWithCommas } from "@/utils";
 import Link from "next/link";
+
+import { WeiToETH, dateTimetoDate, numberWithCommas } from "@/utils";
 import { Transaction } from "@/types";
+import { tooltipInfo } from "./tooltip-info";
 
-const tooltipInfo = {
-	// block_hash: "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
-	block_number:
-		"Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.",
-	block_timestamp: "The date and time at which a transaction is produced.",
-	gas: "",
-	gas_price: "Cost per unit of gas spent for the transaction.",
-	gas_usage:
-		"Maximum amount of gas allocated for the transaction & the amount eventually used. Normal ETH transfers involve 21,000 gas units while contracts involve higher values.",
-	hash: "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
-	input: "Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.",
-	transaction_fee:
-		"Amount paid to process the transaction in Ether and fiat value.",
-	transaction_index: "",
-	value: "Amount paid to process the transaction in Ether and fiat value.",
-	from_address: "Sending party of the transaction.",
-	to_address:
-		"Receiving party of the transaction (could be a contract address).",
-};
-
+/** Component to display transaction details */
 const InformationBody = ({ transaction }: { transaction: Transaction }) => {
+	/** Destructuring transaction details */
 	const {
 		block_hash,
 		block_number,
@@ -308,8 +289,7 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 								className="h-full"
 							>
 								<Text>
-									{numberWithCommas(gas_used)} |{" "}
-									{numberWithCommas(gas)} (
+									{numberWithCommas(gas_used)} | {numberWithCommas(gas)} (
 									{(gas_used / gas) * 100}%)
 								</Text>
 							</Flex>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
 	Grid,
 	Tab,
@@ -18,11 +19,18 @@ import TransactionsTable from "@/components/dashboard/Tables/TransactionsTable";
 import DirectedGraph from "@/components/dashboard/addresses/Graphs/DirectedGraph";
 
 import { getClient } from "@/apollo/server-provider";
+import { AddressTypeFull, Addresses } from "@/types";
+
 import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql";
 import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql";
 import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql";
-import { AddressTypeFull, Addresses } from "@/types";
 
+export const metadata: Metadata = {
+	title: "Addresses",
+	description: "Addresses",
+};
+
+/** Address detail page */
 const AddressPage = async ({
 	params: { address },
 }: {
@@ -72,11 +80,7 @@ const AddressPage = async ({
 				</TabList>
 				<TabPanels>
 					<TabPanel>
-						<Grid
-							numItemsMd={2}
-							numItemsLg={3}
-							className="gap-6 mt-6"
-						>
+						<Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
 							<BoughtVolumeCard address={address} />
 							<SoldVolumeCard address={address} />
 							<LatestTransactionsCard address={address} />

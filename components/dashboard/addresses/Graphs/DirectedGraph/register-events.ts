@@ -1,9 +1,8 @@
+/** Register graph events */
 import { Graph, IEdge, INode } from "@antv/g6";
 import { blurItem, unblurItem } from "./utils";
-export const registerEvents = (graph: Graph) => {
-	registerEventShowPathOnHover(graph);
-};
 
+/** Blur all items except hovered paths and nodes */
 export const registerEventShowPathOnHover = (graph: Graph) => {
 	const blurAllItems = () => {
 		graph.getNodes().map((item) => blurItem(graph, item));

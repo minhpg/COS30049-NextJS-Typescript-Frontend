@@ -1,9 +1,9 @@
+/** Using react-text-gradient library to render page logo with a gradient background */
 import Link from "next/link";
 import { LinearGradient } from "react-text-gradients";
 import { Linear } from "react-text-gradients/lib/types/types";
 
-// Using react-text-gradient library to render page logo with a gradient background
-
+/** Navbar uppercase logo */
 export const NavbarLogo = () => {
 	return (
 		<Link href="/" className="font-black transition-all hover:scale-110">
@@ -12,6 +12,7 @@ export const NavbarLogo = () => {
 	);
 };
 
+/** Footer uppercase logo */
 export const FooterLogo = () => {
 	return (
 		<Link href="/" className="font-black transition-all hover:scale-110">
@@ -20,4 +21,5 @@ export const FooterLogo = () => {
 	);
 };
 
+/** Logo linear gradient colors */
 export const LogoGradient = ["to left", "#17acff ,#ff68f0"] as Linear;

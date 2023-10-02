@@ -1,10 +1,10 @@
 "use client";
 
-import { Address, AddressTypeFull, NumberAggregate } from "@/types";
 import { NodeConfig } from "@antv/g6";
-import { Flex, Text } from "@tremor/react";
-import { WeiToETH } from "@/utils";
+import { Text } from "@tremor/react";
 import Link from "next/link";
+import { Address, AddressTypeFull, NumberAggregate } from "@/types";
+import { WeiToETH } from "@/utils";
 
 export type INodeInfoMenuModel = Partial<NodeConfig> & {
 	data: Address;
@@ -25,7 +25,7 @@ interface TransactionsAggregate {
 		value: NumberAggregate;
 	};
 }
-
+/** Display a node/address's info */
 const NodeInfoMenu = ({ data }: INodeInfoMenuProps) => {
 	const {
 		address,
@@ -57,9 +57,7 @@ const NodeInfoMenu = ({ data }: INodeInfoMenuProps) => {
 
 			<Text className="text-xs mt-3">
 				<span className="font-light">Type:</span>{" "}
-				<span>
-					{AddressTypeFull[type as keyof typeof AddressTypeFull]}
-				</span>
+				<span>{AddressTypeFull[type as keyof typeof AddressTypeFull]}</span>
 			</Text>
 			<div className="mt-3">
 				<Text className="text-xs">Bought</Text>

@@ -1,6 +1,7 @@
 import { Graph } from "@antv/g6";
 import { Text } from "@tremor/react";
 
+/** Graph actions - fit view, center view */
 const GraphActionMenu = ({ graph }: { graph?: Graph }) => {
 	if (!graph) return <Text className="text-xs">Graph not rendered!</Text>;
 	return (

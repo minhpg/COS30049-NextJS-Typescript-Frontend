@@ -2,6 +2,7 @@ import { Card, Flex, Metric, Text, Grid, Badge } from "@tremor/react";
 import { dateTimeToEpoch, numberWithCommas } from "@/utils";
 import { NumberAggregate } from "@/types";
 
+/** Card component displaying transactions count */
 const TransactionsCountCard = ({
 	data,
 }: {
@@ -22,8 +23,7 @@ const TransactionsCountCard = ({
 
 	const tps =
 		transactionsCount /
-		(dateTimeToEpoch(transactionTimeMax) -
-			dateTimeToEpoch(transactionTimeMin));
+		(dateTimeToEpoch(transactionTimeMax) - dateTimeToEpoch(transactionTimeMin));
 	return (
 		<Card className="mx-auto">
 			<Flex alignItems="start">

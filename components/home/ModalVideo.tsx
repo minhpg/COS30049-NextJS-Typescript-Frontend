@@ -16,6 +16,7 @@ interface ModalVideoProps {
 	videoHeight: number;
 }
 
+/** Homepage Modal Video component */
 const ModalVideo = ({
 	thumb,
 	thumbWidth,
@@ -61,10 +62,7 @@ const ModalVideo = ({
 									id="hero-ill-a"
 								>
 									<stop stopColor="#FFF" offset="0%" />
-									<stop
-										stopColor="#EAEAEA"
-										offset="77.402%"
-									/>
+									<stop stopColor="#EAEAEA" offset="77.402%" />
 									<stop stopColor="#DFDFDF" offset="100%" />
 								</linearGradient>
 								<linearGradient
@@ -76,11 +74,7 @@ const ModalVideo = ({
 								>
 									<stop stopColor="#FFF" offset="0%" />
 									<stop stopColor="#EAEAEA" offset="48.57%" />
-									<stop
-										stopColor="#DFDFDF"
-										stopOpacity="0"
-										offset="100%"
-									/>
+									<stop stopColor="#DFDFDF" stopOpacity="0" offset="100%" />
 								</linearGradient>
 								<radialGradient
 									cx="21.152%"
@@ -91,18 +85,10 @@ const ModalVideo = ({
 									id="hero-ill-e"
 								>
 									<stop stopColor="#4FD1C5" offset="0%" />
-									<stop
-										stopColor="#81E6D9"
-										offset="25.871%"
-									/>
+									<stop stopColor="#81E6D9" offset="25.871%" />
 									<stop stopColor="#338CF5" offset="100%" />
 								</radialGradient>
-								<circle
-									id="hero-ill-d"
-									cx="384"
-									cy="216"
-									r="64"
-								/>
+								<circle id="hero-ill-d" cx="384" cy="216" r="64" />
 							</defs>
 							<g fill="none" fillRule="evenodd">
 								<circle
@@ -121,10 +107,7 @@ const ModalVideo = ({
 								/>
 								<g fillRule="nonzero">
 									<use fill="#000" xlinkHref="#hero-ill-d" />
-									<use
-										fill="url(#hero-ill-e)"
-										xlinkHref="#hero-ill-d"
-									/>
+									<use fill="url(#hero-ill-e)" xlinkHref="#hero-ill-d" />
 								</g>
 							</g>
 						</svg>
@@ -147,10 +130,7 @@ const ModalVideo = ({
 				as={Fragment}
 				afterEnter={() => videoRef.current?.play()}
 			>
-				<Dialog
-					initialFocus={videoRef}
-					onClose={() => setModalOpen(false)}
-				>
+				<Dialog initialFocus={videoRef} onClose={() => setModalOpen(false)}>
 					{/* Modal backdrop */}
 					<Transition.Child
 						className="fixed inset-0 z-[99999] bg-black bg-opacity-75 transition-opacity"

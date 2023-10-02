@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
 import { Title, Text } from "@tremor/react";
 
 import InformationBody from "@/components/dashboard/transactions/InformationBody";
 
 import { getClient } from "@/apollo/server-provider";
-import GetTransactionDetails from "@/graphql/dashboard/transactions/GetTransactionDetails.gql";
 import { Transaction } from "@/types";
 
+import GetTransactionDetails from "@/graphql/dashboard/transactions/GetTransactionDetails.gql";
+
+export const metadata: Metadata = {
+	title: "Transactions",
+	description: "Transactions",
+};
+
+/** Transaction detail page */
 const TransactionPage = async ({
 	params: { transaction },
 }: {

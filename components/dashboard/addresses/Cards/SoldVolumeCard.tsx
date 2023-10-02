@@ -40,9 +40,7 @@ const SoldVolumeCard = async ({ address }: { address: string }) => {
 			<Flex alignItems="start">
 				<div>
 					<Text>Sold Volume</Text>
-					<Metric>
-						{WeiToETH(soldAggregate.node.value.sum)} ETH
-					</Metric>
+					<Metric>{WeiToETH(soldAggregate.node.value.sum)} ETH</Metric>
 				</div>
 			</Flex>
 			<Text className="italic">

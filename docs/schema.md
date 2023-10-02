@@ -1003,6 +1003,8 @@
 
 ### Address
 
+Represents an Ethereum Address
+
 <table>
 <thead>
 <tr>
@@ -1016,17 +1018,29 @@
 <tr>
 <td colspan="2" valign="top"><strong>address</strong></td>
 <td valign="top"><a href="#string">String</a>!</td>
-<td></td>
+<td>
+
+An Ethereum address is a 42-character hexadecimal address
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>type</strong></td>
 <td valign="top"><a href="#addresstype">AddressType</a></td>
-<td></td>
+<td>
+
+Type of Ethereum address
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>bought</strong></td>
 <td valign="top">[<a href="#transaction">Transaction</a>!]!</td>
-<td></td>
+<td>
+
+Transactions where the address is the receiving party
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">where</td>
@@ -1061,7 +1075,11 @@
 <tr>
 <td colspan="2" valign="top"><strong>sold</strong></td>
 <td valign="top">[<a href="#transaction">Transaction</a>!]!</td>
-<td></td>
+<td>
+
+Transactions where the address is the sending party
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">where</td>
@@ -2284,6 +2302,8 @@ Pagination information (Relay)
 
 ### Transaction
 
+Represents an Ethereum Transaction
+
 <table>
 <thead>
 <tr>
@@ -2297,42 +2317,74 @@ Pagination information (Relay)
 <tr>
 <td colspan="2" valign="top"><strong>block_hash</strong></td>
 <td valign="top"><a href="#string">String</a>!</td>
-<td></td>
+<td>
+
+Transaction block hash
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>block_number</strong></td>
 <td valign="top"><a href="#int">Int</a>!</td>
-<td></td>
+<td>
+
+Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>gas</strong></td>
 <td valign="top"><a href="#float">Float</a>!</td>
-<td></td>
+<td>
+
+Maximum amount of gas allocated for the transaction. Normal ETH transfers involve 21,000 gas units while contracts involve higher values
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>gas_price</strong></td>
 <td valign="top"><a href="#float">Float</a>!</td>
-<td></td>
+<td>
+
+Cost per unit of gas spent for the transaction
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>gas_used</strong></td>
 <td valign="top"><a href="#float">Float</a>!</td>
-<td></td>
+<td>
+
+Amount of gas used by the transaction
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>hash</strong></td>
 <td valign="top"><a href="#string">String</a>!</td>
-<td></td>
+<td>
+
+A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>input</strong></td>
 <td valign="top"><a href="#string">String</a>!</td>
-<td></td>
+<td>
+
+Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>transaction_fee</strong></td>
 <td valign="top"><a href="#float">Float</a>!</td>
-<td></td>
+<td>
+
+Amount paid to process the transaction in Wei
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>transaction_index</strong></td>
@@ -2342,17 +2394,29 @@ Pagination information (Relay)
 <tr>
 <td colspan="2" valign="top"><strong>value</strong></td>
 <td valign="top"><a href="#float">Float</a>!</td>
-<td></td>
+<td>
+
+Value of Ethereum of the transaction
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>block_timestamp</strong></td>
 <td valign="top"><a href="#datetime">DateTime</a>!</td>
-<td></td>
+<td>
+
+The date and time at which a transaction is produced
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>from_address</strong></td>
 <td valign="top"><a href="#address">Address</a>!</td>
-<td></td>
+<td>
+
+Sending party of the transaction
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">where</td>
@@ -2387,7 +2451,11 @@ Pagination information (Relay)
 <tr>
 <td colspan="2" valign="top"><strong>to_address</strong></td>
 <td valign="top"><a href="#address">Address</a>!</td>
-<td></td>
+<td>
+
+Receiving party of the transaction
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">where</td>
@@ -9958,6 +10026,9 @@ Fields to sort VolumeStats by. The order in which sorts are applied is not guara
 ## Enums
 
 ### AddressType
+
+"
+Address Types for Addresses. Either eoa (Externally Owned Account) or contracts
 
 <table>
 <thead>

@@ -5,11 +5,15 @@ import { SearchIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 
 import {
-	SearchContext,
-	SearchContextProvider,
+	SearchDialogContext,
+	SearchDialogContextProvider,
 	SearchDataResponse,
-} from "./SearchContext";
+} from "./context";
 
+/** Search Dialog component inside context wrapper
+ *
+ * Sets queries
+ */
 const SearchDialogInternal = ({
 	isOpen,
 	setIsOpen,
@@ -17,7 +21,7 @@ const SearchDialogInternal = ({
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-	const { setQuery } = useContext(SearchContext);
+	const { setQuery } = useContext(SearchDialogContext);
 	return (
 		<Dialog open={isOpen} onClose={() => setIsOpen(false)}>
 			<div className="fixed inset-0 bg-black/30 z-40" aria-hidden="true" />
@@ -28,7 +32,6 @@ const SearchDialogInternal = ({
 						placeholder="Search address/transaction hash"
 						onChange={(event) => setQuery(event.target.value)}
 					/>
-
 					<Card className="max-w-screen mt-2 h-1/2 overflow-y-scroll no-scrollbar">
 						<SearchResults />
 					</Card>
@@ -38,28 +41,15 @@ const SearchDialogInternal = ({
 	);
 };
 
-const SearchDialog = ({
-	isOpen,
-	setIsOpen,
-}: {
-	isOpen: boolean;
-	setIsOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-	return (
-		<SearchContextProvider>
-			<SearchDialogInternal isOpen={isOpen} setIsOpen={setIsOpen} />
-		</SearchContextProvider>
-	);
-};
-
+/** Rendering search results from context */
 const SearchResults = () => {
-	const { data }: { data: SearchDataResponse } = useContext(SearchContext);
+	const { data }: { data: SearchDataResponse } =
+		useContext(SearchDialogContext);
 
 	if (!data) return null;
 
 	const { transactions, addresses } = data;
-	if ((transactions.length == 0 && addresses.length == 0) || !data)
-		return null;
+	if ((transactions.length == 0 && addresses.length == 0) || !data) return null;
 
 	return (
 		<List>
@@ -67,14 +57,8 @@ const SearchResults = () => {
 				<span className="font-bold">Addresses</span>
 			</ListItem>
 			{addresses.map(({ address }) => (
-				<ListItem
-					className="text-slate-500 hover:text-slate-700"
-					key={address}
-				>
-					<Link
-						href={`/dashboard/addresses/${address}`}
-						key={address}
-					>
+				<ListItem className="text-slate-500 hover:text-slate-700" key={address}>
+					<Link href={`/dashboard/addresses/${address}`} key={address}>
 						{address}
 					</Link>
 				</ListItem>
@@ -85,10 +69,7 @@ const SearchResults = () => {
 				</span>
 			</ListItem>
 			{transactions.map(({ hash }) => (
-				<ListItem
-					className="text-slate-500 hover:text-slate-700"
-					key={hash}
-				>
+				<ListItem className="text-slate-500 hover:text-slate-700" key={hash}>
 					<Link href={`/dashboard/transactions/${hash}`} key={hash}>
 						{hash}
 					</Link>
@@ -97,4 +78,20 @@ const SearchResults = () => {
 		</List>
 	);
 };
+
+/** Navbar Search Dialog Component */
+const SearchDialog = ({
+	isOpen,
+	setIsOpen,
+}: {
+	isOpen: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+	return (
+		<SearchDialogContextProvider>
+			<SearchDialogInternal isOpen={isOpen} setIsOpen={setIsOpen} />
+		</SearchDialogContextProvider>
+	);
+};
+
 export default SearchDialog;

@@ -1,3 +1,4 @@
+/** Infered types from GraphQL type-defs */
 export type AddressType = "eoa" | "contract";
 
 export const AddressTypeFull = {

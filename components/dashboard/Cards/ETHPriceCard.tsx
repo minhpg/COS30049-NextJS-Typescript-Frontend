@@ -1,10 +1,12 @@
 import { numberWithCommas } from "@/utils";
-import { BadgeDelta, Card, Flex, Metric, Text, Grid } from "@tremor/react";
+import { Card, Flex, Metric, Text, Grid } from "@tremor/react";
 
+/** Card component displaying current ETH price */
 const ETHPriceCard = async () => {
 	let response;
 	let message;
 	try {
+		/** Fetching from coinbase API */
 		response = await fetch(
 			"https://api.coinbase.com/v2/exchange-rates?currency=ETH"
 		);
@@ -16,9 +18,7 @@ const ETHPriceCard = async () => {
 				<Flex alignItems="start">
 					<div>
 						<Text>ETH Price</Text>
-						<Metric>
-							${numberWithCommas(parseFloat(rates.USD))}
-						</Metric>
+						<Metric>${numberWithCommas(parseFloat(rates.USD))}</Metric>
 					</div>
 				</Flex>
 				<Grid className="mt-4">

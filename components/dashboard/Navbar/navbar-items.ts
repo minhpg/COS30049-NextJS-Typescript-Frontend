@@ -1,3 +1,4 @@
+/** Navbar items */
 export const navbarItems = [
 	{
 		path: "/",

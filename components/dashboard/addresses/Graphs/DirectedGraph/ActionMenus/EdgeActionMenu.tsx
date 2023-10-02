@@ -13,6 +13,7 @@ export interface IEdgeActionMenuProps {
 	model: IEdgeActionMenuModel;
 }
 
+/** Edge actions - display transactions */
 const EdgeActionMenu = ({ model }: IEdgeActionMenuProps) => {
 	const { data } = model;
 	if (!data) return;

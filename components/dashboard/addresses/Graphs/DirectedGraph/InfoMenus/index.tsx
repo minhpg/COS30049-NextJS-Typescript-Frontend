@@ -7,6 +7,7 @@ import { Text } from "@tremor/react";
 import { useContext } from "react";
 import { GraphContext } from "../GraphContext";
 
+/** Display info menus depending on which item is selected */
 const InfoMenus = () => {
 	const context = useContext(GraphContext);
 	const { showEdgeMenu, selectedEdge } = context.edgeMenu!;

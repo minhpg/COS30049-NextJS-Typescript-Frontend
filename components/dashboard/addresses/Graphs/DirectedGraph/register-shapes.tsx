@@ -1,17 +1,20 @@
 // @ts-nocheck
+// Disable ts-check due to problems with `g6-react-node` typings
 import { Address, AddressTypeFull } from "@/types";
 import G6, { ModelConfig } from "@antv/g6";
 import { Rect, Group, Text, createNodeFromReact } from "@antv/g6-react-node";
 
-interface NodeAddressReactProps {
+interface INodeAddressReactProps {
 	cfg: ModelConfig;
 }
 
+/** Extending `ModelConfig` interface to append data to node model */
 type NodeConfigWithData = ModelConfig & {
 	data: Address;
 };
 
-const Card = ({ cfg }: NodeAddressReactProps) => {
+/** Define node component using `g6-react-node` components */
+const Card = ({ cfg }: INodeAddressReactProps) => {
 	const nodeConfig = cfg as NodeConfigWithData;
 	return (
 		<Group draggable>
@@ -60,4 +63,5 @@ const Card = ({ cfg }: NodeAddressReactProps) => {
 	);
 };
 
+/** Registering node with G6 */
 G6.registerNode("node-address-react", createNodeFromReact(Card));

@@ -38,6 +38,10 @@ interface ITransactionTableProps {
 	title: string;
 }
 
+/** Transactions Table component to display transactions from query
+ *
+ * Using InfiniteQueryClient wrapper
+ */
 const TransactionsTable = (props: ITransactionTableProps) => {
 	return (
 		<InfiniteQueryClientProvider>
@@ -48,8 +52,10 @@ const TransactionsTable = (props: ITransactionTableProps) => {
 
 export default TransactionsTable;
 
+/** Fetch limit */
 const limit = 10;
 
+/** Data table component */
 const DataTable = ({
 	address,
 	fromAddress,
@@ -57,9 +63,13 @@ const DataTable = ({
 	query,
 	title,
 }: ITransactionTableProps) => {
+	/** useInView hook to check whether user has scrolled to end of page */
 	const { ref, inView } = useInView();
+
+	/** tableRef */
 	const tableRef = useRef(null);
 
+	/** Defining table columns and formatting */
 	const columns = useMemo(
 		() => [
 			{
@@ -125,7 +135,8 @@ const DataTable = ({
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const { data, fetchNextPage, isFetching, isLoading } = useInfiniteQuery(
+	/** useInfiniteQuery hook for pagination */
+	const { data, fetchNextPage } = useInfiniteQuery(
 		[title, sorting],
 		async ({ pageParam = 0 }) => {
 			const offset = pageParam * limit;
@@ -157,18 +168,13 @@ const DataTable = ({
 		}
 	);
 
+	/** Flatten data for table rendering */
 	const flatData = useMemo(
 		() =>
 			data?.pages?.flatMap(
 				({ transactions }: { transactions: Transactions }) => {
 					return transactions.map(
-						({
-							hash,
-							block_timestamp,
-							from_address,
-							to_address,
-							value,
-						}) => {
+						({ hash, block_timestamp, from_address, to_address, value }) => {
 							return {
 								hash,
 								block_timestamp,
@@ -185,16 +191,20 @@ const DataTable = ({
 		[data]
 	);
 
+	/** Get total row count from query response */
 	const totalRowCount = data?.pages?.[0].transactionsAggregate?.count ?? 0;
 
+	/** Count total row fetched */
 	const totalFetched = flatData?.length;
 
+	/** Check if last row in table is inview -> fetch more */
 	useEffect(() => {
 		if (inView) {
 			fetchNextPage();
 		}
 	}, [inView, fetchNextPage]);
 
+	/** Using react-table to render table */
 	const table = useReactTable({
 		data: flatData,
 		columns,
@@ -208,6 +218,7 @@ const DataTable = ({
 
 	const { rows } = table.getRowModel();
 
+	/** Virtualized row for infinite query */
 	const rowVirtualizer = useVirtual({
 		parentRef: tableRef,
 		size: rows.length,
@@ -215,8 +226,7 @@ const DataTable = ({
 	});
 
 	const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
-	const paddingTop =
-		virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+	const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
 	const paddingBottom =
 		virtualRows.length > 0
 			? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
@@ -230,10 +240,7 @@ const DataTable = ({
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
-									<TableHeaderCell
-										key={header.id}
-										className="sticky"
-									>
+									<TableHeaderCell key={header.id} className="sticky">
 										{flexRender(
 											header.column.columnDef.header,
 											header.getContext()
@@ -247,9 +254,7 @@ const DataTable = ({
 				<TableBody>
 					{paddingTop > 0 && (
 						<TableRow>
-							<TableCell
-								style={{ height: `${paddingTop}px` }}
-							></TableCell>
+							<TableCell style={{ height: `${paddingTop}px` }}></TableCell>
 						</TableRow>
 					)}
 					{virtualRows.map((virtualRow) => {
@@ -271,9 +276,7 @@ const DataTable = ({
 					})}
 					{paddingBottom > 0 && (
 						<TableRow>
-							<TableCell
-								style={{ height: `${paddingBottom}px` }}
-							></TableCell>
+							<TableCell style={{ height: `${paddingBottom}px` }}></TableCell>
 						</TableRow>
 					)}
 

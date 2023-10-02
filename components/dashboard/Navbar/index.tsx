@@ -8,17 +8,14 @@ import SearchDialog from "./SearchDialog";
 import NavbarDialog from "./NavbarDialog";
 import { navbarItems } from "./navbar-items";
 
+/** Dashboard Footer component */
 const Navbar = () => {
 	const [isOpenNavigation, setIsOpenNavigation] = useState(false);
 	const [isOpenSearch, setIsOpenSearch] = useState(false);
-
 	return (
 		<>
 			<SearchDialog isOpen={isOpenSearch} setIsOpen={setIsOpenSearch} />
-			<NavbarDialog
-				isOpen={isOpenNavigation}
-				setIsOpen={setIsOpenNavigation}
-			/>
+			<NavbarDialog isOpen={isOpenNavigation} setIsOpen={setIsOpenNavigation} />
 			<Flex className="my-6" justifyContent="between" alignItems="center">
 				<Flex justifyContent="start">
 					<div className="hidden lg:block w-full text-xl">
@@ -27,11 +24,7 @@ const Navbar = () => {
 					<div className="lg:hidden w-full text-xl">
 						<NavbarLogo />
 					</div>
-					<Flex
-						className="space-x-8"
-						alignItems="center"
-						justifyContent="end"
-					>
+					<Flex className="space-x-8" alignItems="center" justifyContent="end">
 						<div
 							id="menu-items"
 							className="text-slate-500 relative hidden lg:flex justify-center text-base font-medium space-x-8"
@@ -90,10 +83,7 @@ const Navbar = () => {
 							</div>
 						</a>
 					</Flex>
-					<Flex
-						alignItems="center"
-						className="relative lg:hidden space-x-4"
-					>
+					<Flex alignItems="center" className="relative lg:hidden space-x-4">
 						<Flex justifyContent="end" className="space-x-3.5">
 							<Button
 								onClick={() => setIsOpenSearch(true)}

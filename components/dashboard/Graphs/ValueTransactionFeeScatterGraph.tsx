@@ -1,11 +1,11 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
 import { Card, Title, Text, ScatterChart } from "@tremor/react";
-import { range } from "lodash";
+import { useQuery } from "@apollo/client";
 
 import GetAllTransactions from "@/graphql/dashboard/GetAllTransactions.gql";
 
+/** Plot `value` against `transaction_fee `*/
 const ValueTransactionFeeScatterGraph = () => {
 	const { data } = useQuery(GetAllTransactions);
 	if (!data)
@@ -15,6 +15,7 @@ const ValueTransactionFeeScatterGraph = () => {
 			</Card>
 		);
 
+	/** Converting Wei to ETH */
 	const graphData = data.transactions.map(
 		({ value, transaction_fee, hash }: any) => {
 			return {

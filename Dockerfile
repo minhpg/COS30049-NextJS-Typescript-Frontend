@@ -9,6 +9,7 @@ RUN npm install --legacy-peer-deps
 # Building Next.js application
 FROM ${BASE} as build
 
+# Getting environment variables from docker-compose
 ARG NEO4J_URI
 ARG NEO4J_USERNAME
 ARG NEO4J_PASSWORD
@@ -20,9 +21,6 @@ ENV NEO4J_USERNAME ${NEO4J_USERNAME}
 ENV NEO4J_PASSWORD ${NEO4J_PASSWORD}
 ENV NEO4J_DB ${NEO4J_DB}
 ENV NEXT_PUBLIC_API_URL ${NEXT_PUBLIC_API_URL}
-
-RUN echo '-------------- env ---------------'
-RUN env
 
 WORKDIR /app
 COPY . .

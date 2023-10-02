@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { Card, Title, Text, DonutChart, Col, Grid } from "@tremor/react";
 import GetTopAddresses from "@/graphql/dashboard/GetTopAddresses.gql";
 
+/** Piechart for top addresses with top transaction count */
 const TopAddressesGraph = () => {
 	const { data } = useQuery(GetTopAddresses);
 
@@ -32,13 +33,7 @@ const TopAddressesGraph = () => {
 							label="Bought Addresses"
 							index="address"
 							category="count"
-							colors={[
-								"violet",
-								"indigo",
-								"rose",
-								"cyan",
-								"amber",
-							]}
+							colors={["violet", "indigo", "rose", "cyan", "amber"]}
 						/>
 					</Card>
 				</Col>

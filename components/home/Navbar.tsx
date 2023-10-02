@@ -6,10 +6,11 @@ import { Flex } from "@tremor/react";
 
 import { NavbarLogo } from "@/components/Logo";
 
+/** Homepage Navbar component */
 const Navbar = () => {
 	const [top, setTop] = useState<boolean>(true);
 
-	// detect whether user has scrolled the page down by 10px
+	/** Detect whether user has scrolled the page down by 10px */
 	const scrollHandler = () => {
 		window.scrollY > 10 ? setTop(false) : setTop(true);
 	};

@@ -1,6 +1,7 @@
 import { Text } from "@tremor/react";
 import { FooterLogo } from "../Logo";
 
+/** Dashboard Footer component */
 const Footer = () => {
 	return (
 		<footer className="footer footer-center w-full p-6">

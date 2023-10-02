@@ -4,9 +4,8 @@ import os
 from neo4j import GraphDatabase, RoutingControl
 import pandas
 
-# Getting Neo4J authentication from environment file
+# Getting Neo4J authentication from environment
 # load_dotenv(dotenv_path=Path('../.env.local'))
-
 NEO4J_URI = os.getenv('NEO4J_URI')
 NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
 NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD')
@@ -19,11 +18,12 @@ RELS_DATA = "relationships.csv"
 NODES_DATA = "nodes.csv"
 
 class Setup:
+    '''Setup class for seeding database'''
     def __init__(self) -> None:
         self.driver = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
 
     def initDatabase(self): 
-        # Clear database and create constraints
+        '''Clear database and create neccessary constraints'''
         queries = ['MATCH (n) DETACH DELETE n','CREATE CONSTRAINT IF NOT EXISTS FOR (a:Address) REQUIRE a.address IS UNIQUE', 
                  'CREATE CONSTRAINT IF NOT EXISTS FOR (t:Transaction) REQUIRE t.hash IS UNIQUE']
         for query in queries:
@@ -31,7 +31,7 @@ class Setup:
         print("Initialized Neo4J")
 
     def createRelationships(self):
-        # Create transactions
+        '''Create transaction edges in database'''
         df = pandas.read_csv(RELS_DATA)
         for _, row in df.iterrows():
             fields = []
@@ -50,8 +50,10 @@ class Setup:
                     v = int(v)
                 fields.append(f"{k}: {v}")
             fields_str = ", ".join(fields)
+
             # Create transactions as edges
             # query = f'MATCH (to:Address), (from:Address) WHERE to.address = "{to_address}" AND from.address = "{from_address}" CREATE (from)-[:TRANSACTION{{{ fields_str }}}]->(to)'
+
             # Create transactions as nodes
             query = f'MATCH (to:Address), (from:Address) WHERE to.address = "{to_address}" AND from.address = "{from_address}" CREATE (t:Transaction{{{ fields_str }}}), (from)-[:BUY]->(t), (to)-[:SELL]->(t)'
             try:
@@ -62,7 +64,7 @@ class Setup:
 
 
     def createNodes(self): 
-        #  Create addresses
+        '''Create nodes in database'''
         df = pandas.read_csv(NODES_DATA)
         query = []
         for _, row in df.iterrows():
@@ -73,6 +75,7 @@ class Setup:
 
 
     def run(self):
+        '''Run seeding script'''
         self.initDatabase()
         self.createNodes()
         self.createRelationships()

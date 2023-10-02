@@ -1,3 +1,4 @@
+/** Graph rendering utilities */
 "use client";
 
 import { TransactionEdgeAggregate } from "@/types";
@@ -12,10 +13,13 @@ interface IReduceData {
 	edges: IUserEdge[];
 }
 
+/** Reduce GraphQL aggreagation response to nodes and edges */
 export const reduceData = (data: {
 	transactionEdgeAggregate: TransactionEdgeAggregate[];
 }): IReduceData => {
 	const transactionEdges = data.transactionEdgeAggregate;
+
+	/** Get address data and remove duplicated */
 	const addresses = removeDuplicatedObjects(
 		[
 			...transactionEdges.map(({ from_address }) => {
@@ -28,9 +32,8 @@ export const reduceData = (data: {
 		"address"
 	);
 
-	const mapTransactionToEdge = (
-		data: TransactionEdgeAggregate
-	): IUserEdge => {
+	/** Create edge from transaction aggregation between two addresses */
+	const mapTransactionToEdge = (data: TransactionEdgeAggregate): IUserEdge => {
 		const {
 			to_address: { address: to_address },
 			from_address: { address: from_address },
@@ -47,6 +50,7 @@ export const reduceData = (data: {
 		};
 	};
 
+	// Parallel edges settings
 	const offsetDiff = 10;
 	const multiEdgeType = "quadratic";
 	const singleEdgeType = "quadratic";
@@ -68,11 +72,11 @@ export const reduceData = (data: {
 			singleEdgeType,
 			loopEdgeType
 		),
-		// edges: transactionEdges.map(mapTransactionToEdge)
 	};
 };
 
 const blurOpacity = 0.3;
+/** Blur graph item */
 export const blurItem = (graph: Graph, item: IEdge | INode) => {
 	graph.updateItem(item, {
 		style: {
@@ -86,6 +90,7 @@ export const blurItem = (graph: Graph, item: IEdge | INode) => {
 	});
 };
 
+/** Unlur graph item */
 export const unblurItem = (graph: Graph, item: IEdge | INode) => {
 	graph.updateItem(item, {
 		style: {

@@ -23,9 +23,7 @@ const LatestTransactionsCard = async ({ address }: { address: string }) => {
 			<Flex alignItems="start">
 				<div>
 					<Text>Total Transactions</Text>
-					<Metric>
-						{boughtAggregate.count + soldAggregate.count}
-					</Metric>
+					<Metric>{boughtAggregate.count + soldAggregate.count}</Metric>
 				</div>
 			</Flex>
 

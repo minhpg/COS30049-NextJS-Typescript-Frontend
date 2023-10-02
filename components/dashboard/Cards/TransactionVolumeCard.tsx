@@ -2,6 +2,7 @@ import { Card, Flex, Metric, Text, Grid } from "@tremor/react";
 import { WeiToETH } from "@/utils";
 import { NumberAggregate } from "@/types";
 
+/** Card component displaying total volume */
 const TransactionVolumeCard = ({
 	data,
 }: {
@@ -20,7 +21,6 @@ const TransactionVolumeCard = ({
 					<Text>Total Txn Volume</Text>
 					<Metric>{WeiToETH(sum)} ETH</Metric>
 				</div>
-				{/* <Badge>{parseFloat(tps.toPrecision(3))} TPS</Badge> */}
 			</Flex>
 			<Grid className="mt-4">
 				<Text className="font-light">Average Transaction</Text>

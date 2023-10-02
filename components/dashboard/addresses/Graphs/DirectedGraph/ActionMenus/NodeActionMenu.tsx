@@ -1,19 +1,14 @@
 "use client";
 
-import { Address, AddressTypeFull, NumberAggregate } from "@/types";
 import { Graph, NodeConfig } from "@antv/g6";
-import { useQuery } from "@apollo/client";
-import GetFullAddressStat from "@/graphql/dashboard/addresses/stat/GetFullAddressStat.gql";
-import { Card, Text } from "@tremor/react";
-import { WeiToETH } from "@/utils";
-import Link from "next/link";
-import { useContext } from "react";
-import { GraphContext } from "../GraphContext";
-import { reduceData } from "../utils";
+import { Text } from "@tremor/react";
 
+import { Address } from "@/types";
 import { apolloClient } from "@/apollo/client-provider";
+import { reduceData } from "../utils";
 import GetTransactionEdgeAggregate from "@/graphql/dashboard/addresses/transactions/GetTransactionEdgeAggregate.gql";
 
+/** Extending `NodeConfig` interface to append data to node model */
 export type INodeActionMenuModel = Partial<NodeConfig> & {
 	data: Address;
 };
@@ -23,51 +18,59 @@ export interface INodeActionMenuProps {
 	graph?: Graph;
 }
 
-interface TransactionsAggregate {
-	count: number;
-	node: {
-		value: NumberAggregate;
-	};
-}
-
+/** Node actions - focus on node, extend paths*/
 const NodeActionMenu = ({ model, graph }: INodeActionMenuProps) => {
+	/** Destructure data from node model */
 	const { data: modelData } = model;
 	if (!modelData) return;
+
+	/** Get selected address */
 	const address = modelData.address;
 
+	/** Extending paths */
 	const extendData = async () => {
+		/** Load transaction edge aggregate data for selected address */
 		const { data } = await apolloClient.query({
 			query: GetTransactionEdgeAggregate,
 			variables: {
 				address,
 			},
 		});
+		/** Count number of updated items */
 		let updated = 0;
+
+		/** Destructure nodes and edges after reducing from response */
 		const { nodes, edges } = reduceData(data);
+
+		/** Check of node exists then add to graph */
 		for (const node of nodes) {
 			if (!graph?.findById(node.id)) {
 				graph?.addItem("node", node);
 				updated += 1;
 			}
 		}
+
+		/** Check of edge exists then add to graph */
 		for (const edge of edges) {
 			if (!graph?.findById(edge.id)) {
 				graph?.addItem("edge", edge);
 				updated += 1;
 			}
 		}
+
+		/** Only relayout and refresh graph if more then 0 items are updated */
 		if (updated > 0) {
 			graph?.layout();
 			graph?.refresh();
 		}
 	};
 
+	/** Center onto selected node */
 	const centerNode = () => {
 		graph.focusItem(graph.findById(address));
 	};
 
 	return (
-		// <Text className="text-xs">No actions!</Text>
 		<div className="mt-3">
 			<Text className="text-xs">Node Actions</Text>
 			<a onClick={extendData}>

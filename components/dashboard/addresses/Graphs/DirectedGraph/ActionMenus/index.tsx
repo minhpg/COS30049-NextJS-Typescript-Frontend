@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { GraphContext } from "../GraphContext";
 import GraphActionMenu from "./GraphActionMenu";
 
+/** Display action menus depending on which item is selected */
 const ActionMenus = () => {
 	const context = useContext(GraphContext);
 	const { showEdgeMenu, selectedEdge } = context.edgeMenu!;

@@ -5,10 +5,10 @@ import { LogoGradient } from "../Logo";
 import { Button } from "@tremor/react";
 import Link from "next/link";
 
-export default function Hero() {
+/** Homepage Hero component */
+const Hero = () => {
 	return (
 		<section className="relative">
-			{/* Illustration behind hero content */}
 			<div
 				className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -z-1"
 				aria-hidden="true"
@@ -40,9 +40,7 @@ export default function Hero() {
 			</div>
 
 			<div className="max-w-6xl mx-auto px-4 sm:px-6">
-				{/* Hero content */}
 				<div className="pt-32 pb-0 md:pt-32">
-					{/* Section header */}
 					<div className="text-center pb-12 md:pb-16">
 						<h1
 							className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
@@ -59,8 +57,8 @@ export default function Hero() {
 								data-aos="zoom-y-out"
 								data-aos-delay="150"
 							>
-								Explore Ethereum Blockchain Transactions and
-								Patterns to understand more about the Network
+								Explore Ethereum Blockchain Transactions and Patterns to
+								understand more about the Network
 							</p>
 							<div
 								className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
@@ -73,7 +71,6 @@ export default function Hero() {
 							</div>
 						</div>
 					</div>
-
 					{/* Hero image */}
 					<ModalVideo
 						thumb={VideoThumb}
@@ -88,4 +85,6 @@ export default function Hero() {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Hero;

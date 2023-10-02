@@ -4,6 +4,7 @@ import "swagger-ui-react/swagger-ui.css";
 import "./swagger-ui-fix.css";
 import { Card } from "@tremor/react";
 
+/** SwaggerUI component for displaying OpenAPI specifications */
 const Swagger = () => {
 	return (
 		<Card className="mt-6">

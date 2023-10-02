@@ -1,42 +1,34 @@
 "use client";
 
-import {
-	Table,
-	TableRow,
-	TableCell,
-	TableHead,
-	TableHeaderCell,
-	TableBody,
-	Badge,
-} from "@tremor/react";
+import { Table, TableRow, TableCell, TableBody, Badge } from "@tremor/react";
+
 import Link from "next/link";
 import {
 	flexRender,
 	getCoreRowModel,
 	getSortedRowModel,
-	Row,
 	SortingState,
 	useReactTable,
 } from "@tanstack/react-table";
-import { useVirtual } from "@tanstack/react-virtual";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
-
-import { WeiToETH, truncateAddress } from "@/utils";
 
 import { apolloClient } from "@/apollo/client-provider";
 import { InfiniteQueryClientProvider } from "@/app/dashboard/query-client-provider";
 import { Transactions } from "@/types";
+import { WeiToETH, truncateAddress } from "@/utils";
 import GetTransactionsBetween from "@/graphql/dashboard/addresses/graph/GetTransactionsBetween.gql";
 
+interface ITransactionTableProps {
+	fromAddress: string;
+	toAddress: string;
+}
+
+/** Transactions Table component to display transactions between two addresses */
 const TransactionsTable = ({
 	fromAddress,
 	toAddress,
-}: {
-	fromAddress: string;
-	toAddress: string;
-}) => {
+}: ITransactionTableProps) => {
 	return (
 		<InfiniteQueryClientProvider>
 			<DataTable fromAddress={fromAddress} toAddress={toAddress} />
@@ -46,18 +38,15 @@ const TransactionsTable = ({
 
 export default TransactionsTable;
 
+/** Fetch limit */
 const limit = 10;
 
-const DataTable = ({
-	fromAddress,
-	toAddress,
-}: {
-	fromAddress: string;
-	toAddress: string;
-}) => {
-	const { ref, inView } = useInView();
+/** Data table component */
+const DataTable = ({ fromAddress, toAddress }: ITransactionTableProps) => {
+	/** tableRef */
 	const tableRef = useRef(null);
 
+	/** Defining table columns and formatting */
 	const columns = useMemo(
 		() => [
 			{
@@ -82,9 +71,7 @@ const DataTable = ({
 					const value = info.getValue();
 					return (
 						<Badge color="green">
-							<span className="text-xs">
-								{WeiToETH(value)} ETH
-							</span>
+							<span className="text-xs">{WeiToETH(value)} ETH</span>
 						</Badge>
 					);
 				},
@@ -95,7 +82,8 @@ const DataTable = ({
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const { data, fetchNextPage, isFetching, isLoading } = useInfiniteQuery(
+	/** useInfiniteQuery hook for pagination */
+	const { data, fetchNextPage, isLoading } = useInfiniteQuery(
 		[`edge-context-table-${fromAddress}-${toAddress}`],
 		async ({ pageParam = 0 }) => {
 			const offset = pageParam * limit;
@@ -126,6 +114,7 @@ const DataTable = ({
 		}
 	);
 
+	/** Flatten data for table rendering */
 	const flatData = useMemo(() => {
 		try {
 			return (
@@ -145,10 +134,13 @@ const DataTable = ({
 		}
 	}, [data]);
 
-	const totalRowCount = data?.pages?.[0]?.transactionsAggregate?.count ?? 0;
+	/** Get total row count from query response */
+	const totalRowCount = data?.pages?.[0].transactionsAggregate?.count ?? 0;
 
+	/** Count total row fetched */
 	const totalFetched = flatData?.length;
 
+	/** Using react-table to render table */
 	const table = useReactTable({
 		data: flatData,
 		columns,
@@ -170,10 +162,7 @@ const DataTable = ({
 						{row.getVisibleCells().map((cell: any) => {
 							return (
 								<TableCell key={cell.id} className="p-2">
-									{flexRender(
-										cell.column.columnDef.cell,
-										cell.getContext()
-									)}
+									{flexRender(cell.column.columnDef.cell, cell.getContext())}
 								</TableCell>
 							);
 						})}
