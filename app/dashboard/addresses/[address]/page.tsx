@@ -57,7 +57,7 @@ const AddressPage = async ({
 	if (!(addresses.length > 0)) {
 		return (
 			<>
-				<Title>{address}</Title>
+				<Title className="break-all">{address}</Title>
 				<Text>Address not found!</Text>
 			</>
 		);
@@ -67,7 +67,7 @@ const AddressPage = async ({
 
 	return (
 		<>
-			<Title>{address}</Title>
+			<Title className="break-all">{address}</Title>
 			<Text>
 				<span className="font-light">Type of address:</span>{" "}
 				{AddressTypeFull[type as keyof typeof AddressTypeFull]}

@@ -17,7 +17,11 @@ const LayoutSelector = () => {
 	};
 
 	return (
-		<Select className="w-24" value={layout.type} onChange={handleChange as any}>
+		<Select
+			className="md:w-24"
+			value={layout.type}
+			onChange={handleChange as any}
+		>
 			{layouts.map(({ type }) => {
 				return (
 					<SelectItem key={type} value={type || ""}>

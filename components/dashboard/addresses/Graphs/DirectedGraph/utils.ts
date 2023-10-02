@@ -103,3 +103,15 @@ export const unblurItem = (graph: Graph, item: IEdge | INode) => {
 		},
 	});
 };
+
+/** Blur all graph items */
+export const blurAllItems = (graph) => {
+	graph.getNodes().map((item) => blurItem(graph, item));
+	graph.getEdges().map((item) => blurItem(graph, item));
+};
+
+/** Unblur all graph items */
+export const unblurAllItems = (graph) => {
+	graph.getNodes().map((item) => unblurItem(graph, item));
+	graph.getEdges().map((item) => unblurItem(graph, item));
+};

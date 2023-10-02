@@ -54,14 +54,16 @@ const G6Graph = () => {
 const GraphInternal = () => {
 	return (
 		<Card className="mt-6">
-			<Flex className="space-x-6">
+			<div className="md:space-x-6 md:flex justify-between">
 				<div className="w-full">
 					<Title>Visualization</Title>
 					<Text>Click a node or edge to see more available actions!</Text>
 				</div>
-				<LayoutSelector />
-				<SearchBox />
-			</Flex>
+				<div className="sm:flex mt-6 md:mt-0 md:space-x-3 h-full w-full justify-start md:justify-end content-center">
+					<LayoutSelector />
+					<SearchBox />
+				</div>
+			</div>
 			<G6Graph />
 		</Card>
 	);

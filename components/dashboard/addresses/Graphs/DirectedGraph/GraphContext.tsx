@@ -20,7 +20,10 @@ import { useWindowSize } from "usehooks-ts";
 import "./register-shapes";
 import { graphOptions } from "./graph-options";
 import { layouts } from "./graph-layouts";
-import { registerEventShowPathOnHover } from "./register-events";
+import {
+	registerEventShowPathOnHover,
+	registerEventShowPathOnTouch,
+} from "./register-events";
 
 import { useQuery } from "@apollo/client";
 import { reduceData } from "./utils";
@@ -103,11 +106,35 @@ export const GraphContextProvider = ({
 			setSelectedEdge(model);
 		});
 
+		/** Register edge touch
+		 *
+		 * Show edge menu
+		 */
+		graph.on("edge:touchstart", (evt: G6GraphEvent) => {
+			const { item } = evt;
+			const model = item.getModel() as EdgeConfig;
+			setShowEdgeMenu(true);
+			setShowNodeMenu(false);
+			setSelectedEdge(model);
+		});
+
 		/** Register node click
 		 *
 		 * Show node menu
 		 */
 		graph.on("node:click", (evt: G6GraphEvent) => {
+			const { item } = evt;
+			const model = item.getModel() as NodeConfig;
+			setShowEdgeMenu(false);
+			setShowNodeMenu(true);
+			setSelectedNode(model);
+		});
+
+		/** Register node touch
+		 *
+		 * Show node menu
+		 */
+		graph.on("node:touchstart", (evt: G6GraphEvent) => {
 			const { item } = evt;
 			const model = item.getModel() as NodeConfig;
 			setShowEdgeMenu(false);
@@ -148,6 +175,7 @@ export const GraphContextProvider = ({
 			graph.data(reduceData(data));
 			graph.render();
 			registerEventShowPathOnHover(graph);
+			registerEventShowPathOnTouch(graph);
 			registerEventMenu(graph);
 		}
 	}, [graph, data]);

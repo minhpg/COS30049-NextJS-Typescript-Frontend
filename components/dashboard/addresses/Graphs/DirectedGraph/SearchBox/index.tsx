@@ -41,7 +41,7 @@ const SearchBox = () => {
 
 	return (
 		<TextInput
-			className="w-24"
+			className="mt-3 sm:mt-0 sm:ml-2 md:ml-0 md:w-24"
 			placeholder="Search for node..."
 			onChange={(event) => searchNode(event.target.value)}
 		/>
