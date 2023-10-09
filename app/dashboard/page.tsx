@@ -8,6 +8,7 @@ import {
 	TabPanels,
 	Title,
 	Text,
+	Callout,
 } from "@tremor/react";
 
 import ETHPriceCard from "@/components/dashboard/Cards/ETHPriceCard";
@@ -26,6 +27,7 @@ import { NumberAggregate } from "@/types";
 
 import GetDashboardData from "@/graphql/dashboard/GetDashboardData.gql";
 import GetAllTransactions from "@/graphql/dashboard/GetAllTransactions.gql";
+import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
@@ -60,6 +62,15 @@ const Dashboard = async () => {
 		<>
 			<Title>Dashboard</Title>
 			<Text>Overview of ETH platform</Text>
+			<Callout className="mt-4" title="Directed Graph" >
+				Visit an address to view directed graph e.g.{" "}
+				<Link
+					href="/dashboard/addresses/0xb0606f433496bf66338b8ad6b6d51fc4d84a44cd"
+					className="font-bold hover:underline"
+				>
+					0xb0606f433496bf66338b8ad6b6d51fc4d84a44cd
+				</Link>
+			</Callout>
 			<TabGroup className="mt-6">
 				<TabList>
 					<Tab>Overview</Tab>
