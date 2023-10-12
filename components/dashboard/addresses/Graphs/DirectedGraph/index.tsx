@@ -43,11 +43,11 @@ const G6Graph = () => {
 		<>
 			{tutorial && (
 				<>
-					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg bg-black/70 z-30"></div>
-					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg z-40 m-6">
-						<Card className="lg:h-full lg:w-1/2 mx-auto overflow-y-scroll no-scrollbar">
+					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg bg-black/70 z-30" onClick={() => showTutorial(false)}></div>
+					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg z-40 m-6" onClick={() => showTutorial(false)}>
+						<Card className="lg:h-full lg:w-1/2 mx-auto overflow-y-scroll">
 							<div className="prose text-tremor-content text-sm max-w-full">
-							<h2 className="mt-6">Interacting with Directed Graph</h2>
+								<h2 className="mt-6">Interacting with Directed Graph</h2>
 								<h3>Interacting with nodes/edges</h3>
 								<p>
 									<ul>
@@ -90,9 +90,7 @@ const G6Graph = () => {
 									</ul>
 								</p>
 							</div>
-							<Button onClick={() => showTutorial(false)}>
-								Close
-							</Button>
+							<Button onClick={() => showTutorial(false)}>Close</Button>
 						</Card>
 					</div>
 				</>
@@ -117,9 +115,15 @@ const G6Graph = () => {
 							</Button>
 						</div>
 						<div className="absolute md:hidden top-0 right-0 left-0 bottom-0 rounded-lg bg-black/70 z-30">
-							<Flex flexDirection="col" alignItems="center" justifyContent="center" className="h-full">
-							<Text className="text-white">Turn your device horizontally</Text>
-
+							<Flex
+								flexDirection="col"
+								alignItems="center"
+								justifyContent="center"
+								className="h-full"
+							>
+								<Text className="text-white">
+									Turn your device horizontally
+								</Text>
 							</Flex>
 						</div>
 						<div ref={context.graphRef.setRef} className="h-full w-full"></div>

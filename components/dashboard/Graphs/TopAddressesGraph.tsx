@@ -31,7 +31,7 @@ const TopAddressesGraph = () => {
 							className="h-72"
 							data={getTopBuyAddresses}
 							label="Bought Addresses"
-							index="address"
+							index="address.address"
 							category="count"
 							colors={["violet", "indigo", "rose", "cyan", "amber"]}
 						/>
