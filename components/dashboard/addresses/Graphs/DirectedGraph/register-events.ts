@@ -31,7 +31,7 @@ export const registerEventShowPathOnHover = (graph: Graph) => {
 
 	/** Register hover node */
 	graph.on("node:mouseenter", (ev) => {
-		unblurAllItems(graph);
+		blurAllItems(graph);
 		const node = ev.item as INode;
 		const edges = node.getEdges();
 		edges.forEach((edge) => {

@@ -24,6 +24,8 @@ import { AddressTypeFull, Addresses } from "@/types";
 import GetAddress from "@/graphql/dashboard/addresses/stat/GetAddress.gql";
 import GetSellTransactions from "@/graphql/dashboard/addresses/transactions/GetSellTransactions.gql";
 import GetBuyTransactions from "@/graphql/dashboard/addresses/transactions/GetBuyTransactions.gql";
+import { alchemyClient } from "@/alchemy";
+import { WeiToETH } from "@/utils";
 
 export const metadata: Metadata = {
 	title: "Addresses",
@@ -65,12 +67,17 @@ const AddressPage = async ({
 
 	const { type } = addresses[0];
 
+	const balance = parseFloat(await alchemyClient.core.getBalance(address));
+
 	return (
 		<>
 			<Title className="break-all">{address}</Title>
 			<Text>
 				<span className="font-light">Type of address:</span>{" "}
 				{AddressTypeFull[type as keyof typeof AddressTypeFull]}
+			</Text>
+			<Text>
+				<span className="font-light">Balance</span> : {WeiToETH(balance)} ETH
 			</Text>
 			<TabGroup className="mt-6">
 				<TabList>

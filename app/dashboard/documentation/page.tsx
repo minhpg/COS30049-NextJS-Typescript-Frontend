@@ -15,8 +15,8 @@ import GithubMarkdown from "@/components/dashboard/documentation/GithubMarkdown"
 
 /** Documentation page */
 const Documentation = async () => {
-	const readMeData = await readFile("./README.md").toString();
-	const schemaData = await readFile("./docs/schema.md").toString();
+	const readMeData = await readFile("./README.md");
+	const schemaData = await readFile("./docs/schema.md");
 	return (
 		<>
 			<Title>Documentation</Title>
@@ -29,10 +29,10 @@ const Documentation = async () => {
 				</TabList>
 				<TabPanels>
 					<TabPanel className="mt-0">
-						<GithubMarkdown markdownData={readMeData} />
+						<GithubMarkdown markdownData={readMeData.toString()} />
 					</TabPanel>
 					<TabPanel className="mt-0">
-						<GithubMarkdown markdownData={schemaData} />
+						<GithubMarkdown markdownData={schemaData.toString()} />
 					</TabPanel>
 					{/* <TabPanel className="mt-0 h-[800px]">
 						<GraphQLExplorer />

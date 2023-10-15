@@ -43,9 +43,12 @@ const G6Graph = () => {
 		<>
 			{tutorial && (
 				<>
-					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg bg-black/70 z-30" onClick={() => showTutorial(false)}></div>
-					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg z-40 m-6" onClick={() => showTutorial(false)}>
-						<Card className="lg:h-full lg:w-1/2 mx-auto overflow-y-scroll">
+					<div
+						className="absolute top-0 right-0 left-0 bottom-0 rounded-lg bg-black/70 z-30"
+						onClick={() => showTutorial(false)}
+					></div>
+					<div className="absolute top-0 right-0 left-0 bottom-0 rounded-lg z-30 lg:w-1/2 mx-auto p-6">
+						<Card className="lg:h-full overflow-y-scroll">
 							<div className="prose text-tremor-content text-sm max-w-full">
 								<h2 className="mt-6">Interacting with Directed Graph</h2>
 								<h3>Interacting with nodes/edges</h3>
@@ -58,6 +61,10 @@ const G6Graph = () => {
 										<li>
 											Sidebar displays relevant information about a specific
 											node/edge
+										</li>
+										<li>Use search box to search for nodes on graph</li>
+										<li>
+											Select from the available graph layouts to fit your needs
 										</li>
 									</ul>
 								</p>

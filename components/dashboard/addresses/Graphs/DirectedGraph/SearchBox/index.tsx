@@ -37,6 +37,8 @@ const SearchBox = () => {
 
 		/** Unblur result items */
 		results.map((item) => unblurItem(graph, item));
+
+		if(results.length == 1) graph.focusItem(results[0]);
 	};
 
 	return (

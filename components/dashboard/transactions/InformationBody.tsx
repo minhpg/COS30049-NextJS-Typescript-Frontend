@@ -67,7 +67,6 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 					</TableRow>
 					<TableRow>
 						<TableCell>
-							{" "}
 							<Flex
 								justifyContent="start"
 								className="space-x-1.5"
@@ -82,7 +81,6 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 							</Flex>
 						</TableCell>
 						<TableCell>
-							{" "}
 							<Flex
 								alignItems="center"
 								justifyContent="start"
@@ -92,31 +90,33 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 							</Flex>
 						</TableCell>
 					</TableRow>
-					<TableRow>
-						<TableCell>
-							<Flex
-								justifyContent="start"
-								className="space-x-1.5"
-								alignItems="center"
-							>
-								<Icon
-									icon={InformationCircleIcon}
-									variant="simple"
-									tooltip={tooltipInfo.block_timestamp}
-								/>
-								<Text>Timestamp:</Text>
-							</Flex>
-						</TableCell>
-						<TableCell>
-							<Flex
-								alignItems="center"
-								justifyContent="start"
-								className="h-full"
-							>
-								<Text>{dateTimetoDate(block_timestamp)}</Text>
-							</Flex>
-						</TableCell>
-					</TableRow>
+					{block_timestamp && (
+						<TableRow>
+							<TableCell>
+								<Flex
+									justifyContent="start"
+									className="space-x-1.5"
+									alignItems="center"
+								>
+									<Icon
+										icon={InformationCircleIcon}
+										variant="simple"
+										tooltip={tooltipInfo.block_timestamp}
+									/>
+									<Text>Timestamp:</Text>
+								</Flex>
+							</TableCell>
+							<TableCell>
+								<Flex
+									alignItems="center"
+									justifyContent="start"
+									className="h-full"
+								>
+									<Text>{dateTimetoDate(block_timestamp)}</Text>
+								</Flex>
+							</TableCell>
+						</TableRow>
+					)}
 
 					<TableRow>
 						<TableCell>
@@ -210,31 +210,33 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 						</TableCell>
 					</TableRow>
 
-					<TableRow>
-						<TableCell>
-							<Flex
-								justifyContent="start"
-								className="space-x-1.5"
-								alignItems="center"
-							>
-								<Icon
-									icon={InformationCircleIcon}
-									variant="simple"
-									tooltip={tooltipInfo.transaction_fee}
-								/>
-								<Text>Transaction Fee:</Text>
-							</Flex>
-						</TableCell>
-						<TableCell>
-							<Flex
-								alignItems="center"
-								justifyContent="start"
-								className="h-full"
-							>
-								<Text>{WeiToETH(transaction_fee)} ETH</Text>
-							</Flex>
-						</TableCell>
-					</TableRow>
+					{transaction_fee && (
+						<TableRow>
+							<TableCell>
+								<Flex
+									justifyContent="start"
+									className="space-x-1.5"
+									alignItems="center"
+								>
+									<Icon
+										icon={InformationCircleIcon}
+										variant="simple"
+										tooltip={tooltipInfo.transaction_fee}
+									/>
+									<Text>Transaction Fee:</Text>
+								</Flex>
+							</TableCell>
+							<TableCell>
+								<Flex
+									alignItems="center"
+									justifyContent="start"
+									className="h-full"
+								>
+									<Text>{WeiToETH(transaction_fee)} ETH</Text>
+								</Flex>
+							</TableCell>
+						</TableRow>
+					)}
 
 					<TableRow>
 						<TableCell>
@@ -267,34 +269,36 @@ const InformationBody = ({ transaction }: { transaction: Transaction }) => {
 						</TableCell>
 					</TableRow>
 
-					<TableRow>
-						<TableCell>
-							<Flex
-								justifyContent="start"
-								className="space-x-1.5"
-								alignItems="center"
-							>
-								<Icon
-									icon={InformationCircleIcon}
-									variant="simple"
-									tooltip={tooltipInfo.gas_usage}
-								/>
-								<Text>Gas Usage:</Text>
-							</Flex>{" "}
-						</TableCell>{" "}
-						<TableCell>
-							<Flex
-								alignItems="center"
-								justifyContent="start"
-								className="h-full"
-							>
-								<Text>
-									{numberWithCommas(gas_used)} | {numberWithCommas(gas)} (
-									{(gas_used / gas) * 100}%)
-								</Text>
-							</Flex>
-						</TableCell>
-					</TableRow>
+					{gas_used && (
+						<TableRow>
+							<TableCell>
+								<Flex
+									justifyContent="start"
+									className="space-x-1.5"
+									alignItems="center"
+								>
+									<Icon
+										icon={InformationCircleIcon}
+										variant="simple"
+										tooltip={tooltipInfo.gas_usage}
+									/>
+									<Text>Gas Usage:</Text>
+								</Flex>
+							</TableCell>
+							<TableCell>
+								<Flex
+									alignItems="center"
+									justifyContent="start"
+									className="h-full"
+								>
+									<Text>
+										{numberWithCommas(gas_used)} | {numberWithCommas(gas)} (
+										{(gas_used / gas) * 100}%)
+									</Text>
+								</Flex>
+							</TableCell>
+						</TableRow>
+					)}
 
 					<TableRow>
 						<TableCell>

@@ -10,7 +10,7 @@ import "github-markdown-css/github-markdown-light.css";
 import "./markdown.css";
 
 /** Render markdown to valid HTML */
-const GithubMarkdown = async ({ markdownData }: { markdownData: string }) => {
+const GithubMarkdown = ({ markdownData }: { markdownData: string }) => {
 	return (
 		<Card className="p-1 mt-6">
 			<ReactMarkdown

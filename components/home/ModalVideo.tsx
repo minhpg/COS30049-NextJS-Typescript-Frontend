@@ -119,7 +119,7 @@ const ModalVideo = ({
 						}}
 						className="absolute transform top-full -translate-y-1/2"
 					>
-						Watch the full video (2 min)
+						Watch the full video (5 min)
 					</Button>
 				</div>
 			</div>
