@@ -20,7 +20,18 @@ NODES_DATA = "nodes.csv"
 class Setup:
     '''Setup class for seeding database'''
     def __init__(self) -> None:
-        self.driver = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+        error = True
+        while(error == True):
+            try:
+                self.driver = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+                print("Connected to Neo4j!")
+                print(NEO4J_URI)
+                error == False
+                break
+            except Exception as e:
+                print("Trying to connect to Neo4j...")
+                print(e)
+                continue
 
     def initDatabase(self): 
         '''Clear database and create neccessary constraints'''
