@@ -1,4 +1,4 @@
-ARG BASE=node:18-alpine
+ARG BASE=node:20.5.1-alpine
 
 # Installing dependencies
 FROM ${BASE} as dependencies
