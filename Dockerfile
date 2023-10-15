@@ -4,6 +4,7 @@ ARG BASE=node:20.5.1-alpine
 FROM ${BASE} as dependencies
 WORKDIR /app
 COPY package.json ./
+COPY package-lock.json ./
 RUN npm install --legacy-peer-deps
 
 # Building Next.js application
